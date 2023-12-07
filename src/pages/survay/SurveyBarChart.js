@@ -1,79 +1,71 @@
-import { useEffect, useState } from 'react';
-
-// material-ui
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-
-// third-party
 import ReactApexChart from 'react-apexcharts';
 
-// chart options
 const barChartOptions = {
   chart: {
     type: 'bar',
     height: 365,
     toolbar: {
-      show: false
-    }
+      show: false,
+    },
   },
   plotOptions: {
     bar: {
       columnWidth: '45%',
       borderRadius: 4,
-    }
+    },
   },
   dataLabels: {
     enabled: false,
   },
   xaxis: {
-    categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
+    categories: [], // Categories will be dynamically set
     axisBorder: {
-      show: false
+      show: false,
     },
     axisTicks: {
-      show: false
-    }
+      show: false,
+    },
   },
   yaxis: {
-    show: false
+    show: false,
   },
   grid: {
-    show: false
-  }
+    show: false,
+  },
 };
 
-// ==============================|| SURVEY BAR CHART ||============================== //
-
-const SurveyBarChart = () => {
+const SurveyBarChart = ({ data }) => {
   const theme = useTheme();
-
-  const { primary, secondary } = theme.palette.text;
+  const { secondary } = theme.palette.text;
   const info = theme.palette.info.light;
 
-  const [series] = useState([
-    {
-      data: [20, 30, 25, 35, 40]
-    }
-  ]);
-
+  const [series, setSeries] = useState([{ data: [] }]);
   const [options, setOptions] = useState(barChartOptions);
 
   useEffect(() => {
+    const categories = Object.keys(data[0]);
+    const seriesData = [{ data: Object.values(data[0]) }];
+
     setOptions((prevState) => ({
       ...prevState,
       colors: [info],
       xaxis: {
+        categories,
         labels: {
           style: {
-            colors: [secondary, secondary, secondary, secondary, secondary]
-          }
-        }
+            colors: Array(categories.length).fill(secondary),
+          },
+        },
       },
       tooltip: {
-        theme: 'light'
-      }
+        theme: 'light',
+      },
     }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [primary, info, secondary]);
+
+    setSeries(seriesData);
+  }, [data, info, secondary]);
 
   return (
     <div id="survey-chart">

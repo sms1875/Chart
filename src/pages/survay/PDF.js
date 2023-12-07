@@ -86,8 +86,8 @@ const PDF = () => {
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
 
-      {/* row 1 */}
-      <Grid item xs={12} md={7} lg={8}>
+       {/* row 1 */}
+       <Grid item xs={12} md={7} lg={8}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5">1. 만족도</Typography>
@@ -111,7 +111,7 @@ const PDF = () => {
         <MainCard sx={{ mt: 2 }} content={false}>
           <Box sx={{ p: 3, pb: 0 }}>
           </Box>
-          <SurveyBarChart />
+          <SurveyBarChart data={testData} />
         </MainCard>
       </Grid>
 
