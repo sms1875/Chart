@@ -66,7 +66,7 @@ const pieChartOptions = {
   ],
 };
 
-const SurveyPieChart = ({ colorMode, chartMode, chartType }) => {
+const SurveyPieChart = ({ colorMode, chartMode, chartType, data }) => {
   const theme = useTheme();
   const { secondary } = theme.palette.text;
   const line = theme.palette.divider;
@@ -74,19 +74,19 @@ const SurveyPieChart = ({ colorMode, chartMode, chartType }) => {
   const primaryMain = theme.palette.primary.main;
   const successDark = theme.palette.success.dark;
 
-  const data = [180, 90, 135, 114, 120];
-  const maxValue = Math.max(...data);
-  const minValue = Math.min(...data);
+  const values = Object.values(data[0]);
+  const maxValue = Math.max(...values);
+  const minValue = Math.min(...values);
 
-  const [series] = useState(data);
+  const [series] = useState(values);
 
   const [options, setOptions] = useState(pieChartOptions);
-
+  
   useEffect(() => {
     setOptions((prevState) => {
       let updatedColors;
       if (colorMode === 'single') {
-        updatedColors = data.map((value) => getColorIntensity(value, maxValue, minValue));
+        updatedColors = values.map((value) => getColorIntensity(value, maxValue, minValue));
       } else {
         updatedColors = [warning, primaryMain, successDark, '#ff5733', '#ffbd33'];
       }
@@ -95,7 +95,7 @@ const SurveyPieChart = ({ colorMode, chartMode, chartType }) => {
         ...prevState,
         chart: {
           ...prevState.chart,
-          type: chartType, // Set the chart type dynamically
+          type: chartType,
         },
         plotOptions: {
           pie: {
@@ -105,11 +105,11 @@ const SurveyPieChart = ({ colorMode, chartMode, chartType }) => {
           },
         },
         colors: updatedColors,
-        labels: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
+        labels: Object.keys(data[0]),
         xaxis: {
           labels: {
             style: {
-              colors: [secondary, secondary, secondary, secondary, secondary],
+              colors: Array(Object.keys(data[0]).length - 1).fill(secondary),
             },
           },
         },
@@ -128,7 +128,7 @@ const SurveyPieChart = ({ colorMode, chartMode, chartType }) => {
         },
       };
     });
-  }, [data, secondary, line, warning, primaryMain, successDark, colorMode, chartMode, chartType]);
+  }, [values, secondary, line, warning, primaryMain, successDark, colorMode, chartMode, chartType]);
 
   return (
     <div id="chart">

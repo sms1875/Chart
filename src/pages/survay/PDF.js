@@ -16,6 +16,16 @@ import SurveySatisfactionChart from './SurveySatisfactionChart';
 import SurveyPieChart from './SurveyPieChart';
 import MainCard from 'components/MainCard';
 
+const testData = [
+  {
+    '매우만족': 25,
+    '만족': 20,
+    '보통': 15,
+    '불만족': 10,
+    '매우 불만족': 5
+  }
+];
+
 // sales report status
 const status = [
   {
@@ -214,7 +224,7 @@ const PDF = () => {
         <MainCard sx={{ mt: 1.75 }}>
           <Box sx={{ p: 3, pb: 0 }}>
           </Box>
-          <SurveyPieChart colorMode={pieChartColorMode} chartMode={chartMode} chartType={chartType} />
+          <SurveyPieChart colorMode={pieChartColorMode} chartMode={chartMode} chartType={chartType} data={testData} />
         </MainCard>
       </Grid>
 
@@ -272,7 +282,7 @@ const PDF = () => {
         <MainCard sx={{ mt: 1.75 }}>
           <Box sx={{ p: 3, pb: 0 }}>
           </Box>
-          <SurveyPieChart colorMode={pieChartColorMode} chartMode={chartMode} chartType={chartType} />
+          <SurveyPieChart colorMode={pieChartColorMode} chartMode={chartMode} chartType={chartType} data={testData} />
         </MainCard>
       </Grid>
     </Grid>
