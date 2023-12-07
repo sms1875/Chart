@@ -1,9 +1,4 @@
 
-```
-git clone https://github.com/codedthemes/mantis-free-react-admin-template.git
-yarn
-yarn start
-```
 
 ## Documentation
 
@@ -21,9 +16,6 @@ yarn start
 - CSS-in-JS.
 
 
-
-
-
-
+## 오픈소스
 mantis-free-react-admin-template
-https://github.com/codedthemes/mantis-free-react-admin-template
+- https://github.com/codedthemes/mantis-free-react-admin-template
