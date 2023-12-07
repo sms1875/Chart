@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import ReactApexChart from 'react-apexcharts';
 
-// chart options for pie chart
+const getColorIntensity = (value, max, min) => {
+  // Calculate the color intensity based on the value, max, and min
+  const normalizedValue = (value - min) / (max - min);
+  const intensity = Math.round(20 + normalizedValue * 80); // Adjust the range (20% - 100%) as needed
+  return `rgba(255, 0, 0, ${intensity / 100})`;
+};
+
 const pieChartOptions = {
   chart: {
     type: 'pie',
@@ -13,8 +19,8 @@ const pieChartOptions = {
   },
   plotOptions: {
     pie: {
-      startAngle: -90,
-      endAngle: 90,
+      startAngle: 0,
+      endAngle: 360,
       offsetX: 0,
       offsetY: 0,
       customScale: 1,
@@ -60,47 +66,60 @@ const pieChartOptions = {
   ],
 };
 
-// ==============================|| SALES PIE CHART ||============================== //
-
-const SurveyPieChart = () => {
+const SurveyPieChart = ({ colorMode }) => {
   const theme = useTheme();
-  const { primary, secondary } = theme.palette.text;
+  const { secondary } = theme.palette.text;
   const line = theme.palette.divider;
   const warning = theme.palette.warning.main;
   const primaryMain = theme.palette.primary.main;
   const successDark = theme.palette.success.dark;
 
-  const [series] = useState([180, 90, 135, 114, 120]); // Use a single series for pie chart
+  const data = [180, 90, 135, 114, 120];
+  const maxValue = Math.max(...data);
+  const minValue = Math.min(...data);
+
+  const [series] = useState(data);
 
   const [options, setOptions] = useState(pieChartOptions);
 
   useEffect(() => {
-    setOptions((prevState) => ({
-      ...prevState,
-      colors: [warning, primaryMain],
-      labels: ['매우만족', '만족', '보통', '불만족', '매우불만족'], // Add labels for each data point
-      xaxis: {
-        labels: {
-          style: {
-            colors: [secondary, secondary, secondary, secondary, secondary],
+    setOptions((prevState) => {
+      let updatedColors;
+      if (colorMode === 'single') {
+        // Single color intensity mode
+        updatedColors = data.map((value) => getColorIntensity(value, maxValue, minValue));
+      } else {
+        // Multiple colors mode
+        updatedColors = [warning, primaryMain, successDark, '#ff5733', '#ffbd33'];
+      }
+
+      return {
+        ...prevState,
+        colors: updatedColors,
+        labels: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
+        xaxis: {
+          labels: {
+            style: {
+              colors: [secondary, secondary, secondary, secondary, secondary],
+            },
           },
         },
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: [secondary],
+        yaxis: {
+          labels: {
+            style: {
+              colors: [secondary],
+            },
           },
         },
-      },
-      grid: {
-        borderColor: line,
-      },
-      tooltip: {
-        theme: 'light',
-      },
-    }));
-  }, [primary, secondary, line, warning, primaryMain, successDark]);
+        grid: {
+          borderColor: line,
+        },
+        tooltip: {
+          theme: 'light',
+        },
+      };
+    });
+  }, [data, secondary, line, warning, primaryMain, successDark, colorMode]);
 
   return (
     <div id="chart">
