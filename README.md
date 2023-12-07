@@ -19,3 +19,4 @@
 ## 오픈소스
 mantis-free-react-admin-template
 - https://github.com/codedthemes/mantis-free-react-admin-template
+- MIT License
