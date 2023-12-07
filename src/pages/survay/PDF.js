@@ -13,7 +13,7 @@ import {
 import SurveyResultTable from './SurveyResultTable';
 import SurveyBarChart from './SurveyBarChart';
 import SurveySatisfactionChart from './SurveySatisfactionChart';
-import SurveyColumnChart from './SurveyColumnChart';
+import SurveyPieChart from './SurveyPieChart';
 import MainCard from 'components/MainCard';
 
 // sales report status
@@ -150,7 +150,7 @@ const PDF = () => {
         <MainCard sx={{ mt: 1.75 }}>
           <Box sx={{ p: 3, pb: 0 }}>
           </Box>
-          <SurveyColumnChart chartType={'area'} />
+          <SurveyPieChart chartType={'table'} />
         </MainCard>
       </Grid>
           
