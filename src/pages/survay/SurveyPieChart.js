@@ -11,7 +11,7 @@ const getColorIntensity = (value, max, min) => {
 
 const pieChartOptions = {
   chart: {
-    type: 'pie',
+    type: 'pie', // Default type
     height: 430,
     toolbar: {
       show: false,
@@ -66,7 +66,7 @@ const pieChartOptions = {
   ],
 };
 
-const SurveyPieChart = ({ colorMode }) => {
+const SurveyPieChart = ({ colorMode, chartMode, chartType }) => {
   const theme = useTheme();
   const { secondary } = theme.palette.text;
   const line = theme.palette.divider;
@@ -86,15 +86,24 @@ const SurveyPieChart = ({ colorMode }) => {
     setOptions((prevState) => {
       let updatedColors;
       if (colorMode === 'single') {
-        // Single color intensity mode
         updatedColors = data.map((value) => getColorIntensity(value, maxValue, minValue));
       } else {
-        // Multiple colors mode
         updatedColors = [warning, primaryMain, successDark, '#ff5733', '#ffbd33'];
       }
 
       return {
         ...prevState,
+        chart: {
+          ...prevState.chart,
+          type: chartType, // Set the chart type dynamically
+        },
+        plotOptions: {
+          pie: {
+            ...prevState.plotOptions.pie,
+            startAngle: chartMode === 'full' ? 0 : -90,
+            endAngle: chartMode === 'full' ? 360 : 90,
+          },
+        },
         colors: updatedColors,
         labels: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
         xaxis: {
@@ -119,11 +128,11 @@ const SurveyPieChart = ({ colorMode }) => {
         },
       };
     });
-  }, [data, secondary, line, warning, primaryMain, successDark, colorMode]);
+  }, [data, secondary, line, warning, primaryMain, successDark, colorMode, chartMode, chartType]);
 
   return (
     <div id="chart">
-      <ReactApexChart options={options} series={series} type="pie" height={430} />
+      <ReactApexChart options={options} series={series} type={chartType} height={430} />
     </div>
   );
 };
