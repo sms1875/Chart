@@ -14,7 +14,7 @@ const testData = [
   {
     title : '만족도 조사',
     categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
-    data: [44, 55, 41, 17, 15]
+    data: [44, 55, 41, 17, 25]
   }
 ];
 
@@ -33,10 +33,6 @@ const PDF = () => {
       {/* row 2 */}
       <Grid item xs={12} md={7} lg={8}>
         <SurveyResultTable data={testData}/>
-      </Grid>
-
-      {/* row 3 */}
-      <Grid item xs={12} md={7} lg={8}>
       </Grid>
 
       {/* row 4 */}

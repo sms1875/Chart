@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-
-// material-ui
 import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-
 import MainCard from 'components/MainCard';
 
 function descendingComparator(a, b, orderBy) {
@@ -37,7 +34,7 @@ const headCells = [
     id: 'trackingNo',
     align: 'left',
     disablePadding: false,
-    label: '항목 번호',
+    label: '번호',
   },
   {
     id: 'name',
@@ -49,7 +46,7 @@ const headCells = [
     id: 'satisfactionLevel',
     align: 'left',
     disablePadding: false,
-    label: '응답 개수',
+    label: '응답 수',
   },
 ];
 
@@ -58,11 +55,7 @@ function OrderTableHead() {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.align}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-          >
+          <TableCell key={headCell.id} align={headCell.align} padding={headCell.disablePadding ? 'none' : 'normal'}>
             {headCell.label}
           </TableCell>
         ))}
@@ -83,12 +76,14 @@ export default function SurveyResultTable({ data }) {
 
   const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
+  const { title, categories, data: satisfactionData } = data[0] || { title: '', categories: [], data: [] };
+
   return (
     <div id="table">
       <Box>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">{data[0]?.title}</Typography>
+            <Typography variant="h5">{title}</Typography>
           </Grid>
           <Grid item />
         </Grid>
@@ -116,11 +111,14 @@ export default function SurveyResultTable({ data }) {
             >
               <OrderTableHead order={order} orderBy={orderBy} />
               <TableBody>
-                {stableSort(data[0]?.categories.map((category, index) => ({
-                  trackingNo: index + 1,
-                  name: category,
-                  satisfactionLevel: data[0]?.data[index],
-                })), getComparator(order, orderBy)).map((row, index) => {
+                {stableSort(
+                  categories.map((category, index) => ({
+                    trackingNo: index + 1,
+                    name: category,
+                    satisfactionLevel: satisfactionData[index],
+                  })),
+                  getComparator(order, orderBy)
+                ).map((row, index) => {
                   const isItemSelected = isSelected(row.trackingNo);
                   const labelId = `enhanced-table-checkbox-${index}`;
 

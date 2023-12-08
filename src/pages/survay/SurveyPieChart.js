@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
 import { Box, Grid, MenuItem, TextField, Typography, useTheme } from '@mui/material';
-
 import ReactApexChart from 'react-apexcharts';
 import MainCard from 'components/MainCard';
 
@@ -13,24 +11,26 @@ const getColorIntensity = (value, max, min) => {
 
 const colorModes = [
   { value: 'single', label: 'Single Color' },
-  { value: 'multiple', label: 'Multiple Colors' }
+  { value: 'multiple', label: 'Multiple Colors' },
 ];
 
 const chartModes = [
   { value: 'full', label: 'Full' },
-  { value: 'half', label: 'Half' }
+  { value: 'half', label: 'Half' },
 ];
 
 const chartTypes = [
   { value: 'pie', label: 'Pie' },
-  { value: 'donut', label: 'Donut' }
+  { value: 'donut', label: 'Donut' },
 ];
 
 const pieChartOptions = {
   chart: {
     type: 'pie',
     height: 430,
-    toolbar: { show: false },
+    toolbar: { 
+      show: false 
+    },
   },
   plotOptions: {
     pie: {
@@ -61,8 +61,8 @@ const pieChartOptions = {
       width: 16,
       height: 16,
       radius: '50%',
-      offsexX: 2,
-      offsexY: 2,
+      offsetX: 2, // Fix the typo here
+      offsetY: 2, // Fix the typo here
     },
     itemMargin: {
       horizontal: 15,
@@ -92,8 +92,8 @@ const SurveyPieChart = ({ data }) => {
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    const categories = data[0].categories || Object.keys(data[0]);
-    const values = data[0].data || Object.values(data[0]);
+    const categories = data[0]?.categories || Object.keys(data[0]);
+    const values = data[0]?.data || Object.values(data[0]);
     const maxValue = Math.max(...values);
     const minValue = Math.min(...values);
 
@@ -122,9 +122,8 @@ const SurveyPieChart = ({ data }) => {
     }));
 
     // Set the chart title
-    setTitle(data[0].title || 'Default Title');
+    setTitle(data[0]?.title || 'Default Title');
   }, [data, type, shape, colorMode, secondary, divider, warning, primary, success]);
-
 
   return (
     <div id="chart">
@@ -176,7 +175,7 @@ const SurveyPieChart = ({ data }) => {
             ))}
           </TextField>
         </Grid>
-        </Grid>
+      </Grid>
       <MainCard sx={{ mt: 1.75 }}>
         <Box sx={{ p: 3, pb: 0 }}>
           <ReactApexChart options={options} series={series} type={type} height={430} />

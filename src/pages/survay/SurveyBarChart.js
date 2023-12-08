@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
-// material-ui
 import { Box, Grid, MenuItem, TextField, Typography, useTheme } from '@mui/material';
-
 import ReactApexChart from 'react-apexcharts';
 import MainCard from 'components/MainCard';
 
 const chartTypes = [
-  {
-    value: 'bar',
-    label: 'bar'
-  },
-  {
-    value: 'area',
-    label: 'area'
-  }
+  { value: 'bar', label: 'bar' },
+  { value: 'area', label: 'area' },
 ];
 
 const barChartOptions = {
@@ -53,23 +44,23 @@ const barChartOptions = {
 
 const SurveyBarChart = ({ data }) => {
   const theme = useTheme();
-  const { secondary } = theme.palette.text;
   const info = theme.palette.info.light;
+  const { secondary } = theme.palette.text;
 
-  const [series, setSeries] = useState([{ data: [] }]);
+  const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(barChartOptions);
   const [type, setType] = useState('bar');
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data?.[0]) {
       const { title, categories, data: chartData } = data[0];
 
       setOptions((prevState) => ({
         ...prevState,
         chart: {
           ...prevState.chart,
-          type: type,
+          type,
         },
         colors: [info],
         xaxis: {
