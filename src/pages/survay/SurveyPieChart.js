@@ -14,7 +14,7 @@ const colorModes = [
   { value: 'multiple', label: 'Multiple Colors' },
 ];
 
-const chartModes = [
+const chartShapes = [
   { value: 'full', label: 'Full' },
   { value: 'half', label: 'Half' },
 ];
@@ -154,7 +154,7 @@ const SurveyPieChart = ({ data }) => {
             onChange={(e) => setShape(e.target.value)}
             sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
           >
-            {chartModes.map((option) => (
+            {chartShapes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>

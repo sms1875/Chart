@@ -4,8 +4,8 @@ import ReactApexChart from 'react-apexcharts';
 import MainCard from 'components/MainCard';
 
 const chartTypes = [
-  { value: 'bar', label: 'bar' },
-  { value: 'area', label: 'area' },
+  { value: 'bar', label: 'Bar' },
+  { value: 'area', label: 'Area' },
 ];
 
 const barChartOptions = {
