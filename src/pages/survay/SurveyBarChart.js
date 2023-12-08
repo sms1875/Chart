@@ -68,7 +68,7 @@ const SurveyBarChart = ({ data }) => {
   }, [data, info, secondary]);
 
   return (
-    <div id="survey-chart">
+    <div id="chart">
       <ReactApexChart options={options} series={series} type="bar" height={365} />
     </div>
   );
