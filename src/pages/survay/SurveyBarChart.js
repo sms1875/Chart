@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+
+// material-ui
+import { Box, Grid, MenuItem, TextField, Typography, useTheme } from '@mui/material';
+
 import ReactApexChart from 'react-apexcharts';
+import MainCard from 'components/MainCard';
+
+const chartTypes = [
+  {
+    value: 'bar',
+    label: 'bar'
+  },
+  {
+    value: 'area',
+    label: 'area'
+  }
+];
 
 const barChartOptions = {
   chart: {
@@ -43,6 +58,7 @@ const SurveyBarChart = ({ data }) => {
 
   const [series, setSeries] = useState([{ data: [] }]);
   const [options, setOptions] = useState(barChartOptions);
+  const [chartType, setChartType] = useState('bar'); 
 
   useEffect(() => {
     const categories = Object.keys(data[0]);
@@ -50,6 +66,10 @@ const SurveyBarChart = ({ data }) => {
 
     setOptions((prevState) => ({
       ...prevState,
+      chart: {
+        ...prevState.chart,
+        type: chartType,
+      },
       colors: [info],
       xaxis: {
         categories,
@@ -65,11 +85,35 @@ const SurveyBarChart = ({ data }) => {
     }));
 
     setSeries(seriesData);
-  }, [data, info, secondary]);
+  }, [data, info, secondary, chartType]);
 
   return (
     <div id="chart">
-      <ReactApexChart options={options} series={series} type="bar" height={365} />
+       <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">1. 만족도</Typography>
+          </Grid>
+          <Grid item />
+          <TextField
+            id="standard-select-currency"
+            size="small"
+            select
+            value={chartType}
+            onChange={(e) => setChartType(e.target.value)}
+            sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
+          >
+            {chartTypes.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+          <Box sx={{ p: 3, pb: 0 }}>
+          </Box>
+          <ReactApexChart options={options} series={series} type={chartType} height={365} />
+        </MainCard>
     </div>
   );
 };
