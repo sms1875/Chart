@@ -1,58 +1,36 @@
-import { useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
+
+import { Box, Grid, MenuItem, TextField, Typography, useTheme } from '@mui/material';
+
 import ReactApexChart from 'react-apexcharts';
-import { Box, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import MainCard from 'components/MainCard';
 
 const getColorIntensity = (value, max, min) => {
-  // Calculate the color intensity based on the value, max, and min
   const normalizedValue = (value - min) / (max - min);
-  const intensity = Math.round(20 + normalizedValue * 80); // Adjust the range (20% - 100%) as needed
+  const intensity = Math.round(20 + normalizedValue * 80);
   return `rgba(255, 0, 0, ${intensity / 100})`;
 };
 
-
 const colorModes = [
-  {
-    value: 'single',
-    label: 'Single Color'
-  },
-  {
-    value: 'multiple',
-    label: 'Multiple Colors'
-  }
+  { value: 'single', label: 'Single Color' },
+  { value: 'multiple', label: 'Multiple Colors' }
 ];
 
 const chartModes = [
-  {
-    value: 'full',
-    label: 'Full'
-  },
-  {
-    value: 'half',
-    label: 'Half'
-  }
+  { value: 'full', label: 'Full' },
+  { value: 'half', label: 'Half' }
 ];
 
-
 const chartTypes = [
-  {
-    value: 'pie',
-    label: 'pie'
-  },
-  {
-    value: 'donut',
-    label: 'donut'
-  }
+  { value: 'pie', label: 'Pie' },
+  { value: 'donut', label: 'Donut' }
 ];
 
 const pieChartOptions = {
   chart: {
-    type: 'pie', // Default type
+    type: 'pie',
     height: 430,
-    toolbar: {
-      show: false,
-    },
+    toolbar: { show: false },
   },
   plotOptions: {
     pie: {
@@ -104,86 +82,63 @@ const pieChartOptions = {
 };
 
 const SurveyPieChart = ({ data }) => {
-
   const theme = useTheme();
-  const { secondary } = theme.palette.text;
-  const line = theme.palette.divider;
-  const warning = theme.palette.warning.main;
-  const primaryMain = theme.palette.primary.main;
-  const successDark = theme.palette.success.dark;
-
-  const values = Object.values(data[0]);
-  const maxValue = Math.max(...values);
-  const minValue = Math.min(...values);
-
-  const [series] = useState(values);
-
+  const { secondary, divider, warning, primary, success } = theme.palette;
+  const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(pieChartOptions);
-  const [pieChartColorMode, setPieChartColorMode] = useState('single'); // Default to 'single'
-  const [chartMode, setChartMode] = useState('full'); // Default to 'full'
-  const [chartType, setChartType] = useState('pie'); // Default to 'pie'
+  const [colorMode, setColorMode] = useState('single');
+  const [shape, setShape] = useState('full');
+  const [type, setType] = useState('pie');
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
-    setOptions((prevState) => {
-      let updatedColors;
-      if (pieChartColorMode === 'single') {
-        updatedColors = values.map((value) => getColorIntensity(value, maxValue, minValue));
-      } else {
-        updatedColors = [warning, primaryMain, successDark, '#ff5733', '#ffbd33'];
-      }
+    const categories = data[0].categories || Object.keys(data[0]);
+    const values = data[0].data || Object.values(data[0]);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
 
-      return {
-        ...prevState,
-        chart: {
-          ...prevState.chart,
-          type: chartType,
+    setSeries(values);
+
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      chart: { ...prevOptions.chart, type: type },
+      plotOptions: {
+        pie: {
+          ...prevOptions.plotOptions.pie,
+          startAngle: shape === 'full' ? 0 : -90,
+          endAngle: shape === 'full' ? 360 : 90,
         },
-        plotOptions: {
-          pie: {
-            ...prevState.plotOptions.pie,
-            startAngle: chartMode === 'full' ? 0 : -90,
-            endAngle: chartMode === 'full' ? 360 : 90,
-          },
-        },
-        colors: updatedColors,
-        labels: Object.keys(data[0]),
-        xaxis: {
-          labels: {
-            style: {
-              colors: Array(Object.keys(data[0]).length - 1).fill(secondary),
-            },
-          },
-        },
-        yaxis: {
-          labels: {
-            style: {
-              colors: [secondary],
-            },
-          },
-        },
-        grid: {
-          borderColor: line,
-        },
-        tooltip: {
-          theme: 'light',
-        },
-      };
-    });
-  }, [values, secondary, line, warning, primaryMain, successDark, pieChartColorMode, chartMode, chartType]);
+      },
+      colors: colorMode === 'single'
+        ? values.map((value) => getColorIntensity(value, maxValue, minValue))
+        : [warning.main, primary.main, success.dark, '#ff5733', '#ffbd33'],
+      labels: categories,
+      xaxis: {
+        labels: { style: { colors: Array(categories.length - 1).fill(secondary) } },
+      },
+      yaxis: { labels: { style: { colors: [secondary] } } },
+      grid: { borderColor: divider },
+      tooltip: { theme: 'light' },
+    }));
+
+    // Set the chart title
+    setTitle(data[0].title || 'Default Title');
+  }, [data, type, shape, colorMode, secondary, divider, warning, primary, success]);
+
 
   return (
     <div id="chart">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">5. 만족도</Typography>
+          <Typography variant="h5">{title}</Typography>
         </Grid>
         <Grid item>
           <TextField
-            id="standard-select-currency"
+            id="color-mode-select"
             size="small"
             select
-            value={pieChartColorMode}
-            onChange={(e) => setPieChartColorMode(e.target.value)}
+            value={colorMode}
+            onChange={(e) => setColorMode(e.target.value)}
             sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
           >
             {colorModes.map((option) => (
@@ -193,11 +148,11 @@ const SurveyPieChart = ({ data }) => {
             ))}
           </TextField>
           <TextField
-            id="standard-select-currency"
+            id="chart-mode-select"
             size="small"
             select
-            value={chartMode}
-            onChange={(e) => setChartMode(e.target.value)}
+            value={shape}
+            onChange={(e) => setShape(e.target.value)}
             sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
           >
             {chartModes.map((option) => (
@@ -207,11 +162,11 @@ const SurveyPieChart = ({ data }) => {
             ))}
           </TextField>
           <TextField
-            id="standard-select-currency"
+            id="chart-type-select"
             size="small"
             select
-            value={chartType}
-            onChange={(e) => setChartType(e.target.value)}
+            value={type}
+            onChange={(e) => setType(e.target.value)}
             sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
           >
             {chartTypes.map((option) => (
@@ -221,11 +176,11 @@ const SurveyPieChart = ({ data }) => {
             ))}
           </TextField>
         </Grid>
-      </Grid>
+        </Grid>
       <MainCard sx={{ mt: 1.75 }}>
         <Box sx={{ p: 3, pb: 0 }}>
+          <ReactApexChart options={options} series={series} type={type} height={430} />
         </Box>
-        <ReactApexChart options={options} series={series} type={chartType} height={430} />
       </MainCard>
     </div>
   );

@@ -3,23 +3,18 @@
 // material-ui
 import {
   Grid,
-  Typography
 } from '@mui/material';
 
 // project import
 import SurveyResultTable from './SurveyResultTable';
 import SurveyBarChart from './SurveyBarChart';
-import SurveySatisfactionChart from './SurveySatisfactionChart';
 import SurveyPieChart from './SurveyPieChart';
-import MainCard from 'components/MainCard';
 
 const testData = [
   {
-    '매우 만족': 25,
-    '만족': 20,
-    '보통': 15,
-    '불만족': 10,
-    '매우 불만족': 5
+    title : '만족도 조사',
+    categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
+    data: [44, 55, 41, 17, 15]
   }
 ];
 
@@ -37,22 +32,11 @@ const PDF = () => {
 
       {/* row 2 */}
       <Grid item xs={12} md={7} lg={8}>
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5">Recent Orders</Typography>
-          </Grid>
-          <Grid item />
-        </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-          {/* Pass the testData to SurveyResultTable */}
-          <SurveyResultTable data={testData} />
-        </MainCard>
+        <SurveyResultTable data={testData}/>
       </Grid>
-
 
       {/* row 3 */}
       <Grid item xs={12} md={7} lg={8}>
-          <SurveySatisfactionChart />
       </Grid>
 
       {/* row 4 */}

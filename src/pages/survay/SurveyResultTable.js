@@ -2,20 +2,9 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // material-ui
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
-
-function createData(trackingNo, name, satisfactionLevel) {
-  return { trackingNo, name, satisfactionLevel };
-}
-
-const rows = [
-  createData(1, '매우만족', 20),
-  createData(2, '만족', 30),
-  createData(3, '보통', 25),
-  createData(4, '불만족', 35),
-  createData(5, '매우불만족', 40),
-];
+import MainCard from 'components/MainCard';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -43,26 +32,25 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
 const headCells = [
   {
     id: 'trackingNo',
     align: 'left',
     disablePadding: false,
-    label: '항목 번호'
+    label: '항목 번호',
   },
   {
     id: 'name',
     align: 'left',
     disablePadding: true,
-    label: '항목'
+    label: '항목',
   },
   {
-    id: 'responseCount',
+    id: 'satisfactionLevel',
     align: 'left',
     disablePadding: false,
-    label: '응답 개수'
-  }
+    label: '응답 개수',
+  },
 ];
 
 function OrderTableHead() {
@@ -85,10 +73,10 @@ function OrderTableHead() {
 
 OrderTableHead.propTypes = {
   order: PropTypes.string,
-  orderBy: PropTypes.string
+  orderBy: PropTypes.string,
 };
 
-export default function SurveyResultTable() {
+export default function SurveyResultTable({ data }) {
   const [order] = useState('asc');
   const [orderBy] = useState('trackingNo');
   const [selected] = useState([]);
@@ -96,55 +84,69 @@ export default function SurveyResultTable() {
   const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
   return (
-    <Box>
-      <TableContainer
-        sx={{
-          width: '100%',
-          overflowX: 'auto',
-          position: 'relative',
-          display: 'block',
-          maxWidth: '100%',
-          '& td, & th': { whiteSpace: 'nowrap' }
-        }}
-      >
-        <Table
-          aria-labelledby="tableTitle"
-          sx={{
-            '& .MuiTableCell-root:first-of-type': {
-              pl: 2
-            },
-            '& .MuiTableCell-root:last-of-type': {
-              pr: 3
-            }
-          }}
-        >
-          <OrderTableHead order={order} orderBy={orderBy} />
-          <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-              const isItemSelected = isSelected(row.trackingNo);
-              const labelId = `enhanced-table-checkbox-${index}`;
+    <div id="table">
+      <Box>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">{data[0]?.title}</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+          <TableContainer
+            sx={{
+              width: '100%',
+              overflowX: 'auto',
+              position: 'relative',
+              display: 'block',
+              maxWidth: '100%',
+              '& td, & th': { whiteSpace: 'nowrap' },
+            }}
+          >
+            <Table
+              aria-labelledby="tableTitle"
+              sx={{
+                '& .MuiTableCell-root:first-of-type': {
+                  pl: 2,
+                },
+                '& .MuiTableCell-root:last-of-type': {
+                  pr: 3,
+                },
+              }}
+            >
+              <OrderTableHead order={order} orderBy={orderBy} />
+              <TableBody>
+                {stableSort(data[0]?.categories.map((category, index) => ({
+                  trackingNo: index + 1,
+                  name: category,
+                  satisfactionLevel: data[0]?.data[index],
+                })), getComparator(order, orderBy)).map((row, index) => {
+                  const isItemSelected = isSelected(row.trackingNo);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={row.trackingNo}
-                  selected={isItemSelected}
-                >
-                  <TableCell component="th" id={labelId} scope="row" align="left">
-                    {row.trackingNo}
-                  </TableCell>
-                  <TableCell align="left">{row.name}</TableCell>
-                  <TableCell align="left">{row.satisfactionLevel}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.trackingNo}
+                      selected={isItemSelected}
+                    >
+                      <TableCell component="th" id={labelId} scope="row" align="left">
+                        {row.trackingNo}
+                      </TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.satisfactionLevel}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </MainCard>
+      </Box>
+    </div>
   );
 }

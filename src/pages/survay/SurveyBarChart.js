@@ -58,62 +58,65 @@ const SurveyBarChart = ({ data }) => {
 
   const [series, setSeries] = useState([{ data: [] }]);
   const [options, setOptions] = useState(barChartOptions);
-  const [chartType, setChartType] = useState('bar'); 
+  const [type, setType] = useState('bar');
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
-    const categories = Object.keys(data[0]);
-    const seriesData = [{ data: Object.values(data[0]) }];
+    if (data.length > 0) {
+      const { title, categories, data: chartData } = data[0];
 
-    setOptions((prevState) => ({
-      ...prevState,
-      chart: {
-        ...prevState.chart,
-        type: chartType,
-      },
-      colors: [info],
-      xaxis: {
-        categories,
-        labels: {
-          style: {
-            colors: Array(categories.length).fill(secondary),
+      setOptions((prevState) => ({
+        ...prevState,
+        chart: {
+          ...prevState.chart,
+          type: type,
+        },
+        colors: [info],
+        xaxis: {
+          categories,
+          labels: {
+            style: {
+              colors: Array(categories.length).fill(secondary),
+            },
           },
         },
-      },
-      tooltip: {
-        theme: 'light',
-      },
-    }));
+        tooltip: {
+          theme: 'light',
+        },
+      }));
 
-    setSeries(seriesData);
-  }, [data, info, secondary, chartType]);
+      setSeries([{ data: chartData }]);
+      setTitle(title);
+    }
+  }, [data, info, secondary, type]);
 
   return (
     <div id="chart">
-       <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5">1. 만족도</Typography>
-          </Grid>
-          <Grid item />
-          <TextField
-            id="standard-select-currency"
-            size="small"
-            select
-            value={chartType}
-            onChange={(e) => setChartType(e.target.value)}
-            sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
-          >
-            {chartTypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+      <Grid container alignItems="center" justifyContent="space-between">
+        <Grid item>
+          <Typography variant="h5">{title}</Typography>
         </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-          <Box sx={{ p: 3, pb: 0 }}>
-          </Box>
-          <ReactApexChart options={options} series={series} type={chartType} height={365} />
-        </MainCard>
+        <Grid item />
+        <TextField
+          id="standard-select-currency"
+          size="small"
+          select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
+        >
+          {chartTypes.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
+      <MainCard sx={{ mt: 2 }} content={false}>
+        <Box sx={{ p: 3, pb: 0 }}>
+        </Box>
+        <ReactApexChart options={options} series={series} type={type} height={365} />
+      </MainCard>
     </div>
   );
 };
