@@ -92,8 +92,8 @@ const SurveyPieChart = ({ data }) => {
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    const categories = data[0]?.categories || Object.keys(data[0]);
-    const values = data[0]?.data || Object.values(data[0]);
+    const categories = data.categories || Object.keys(data);
+    const values = data.data || Object.values(data);
     const maxValue = Math.max(...values);
     const minValue = Math.min(...values);
 
@@ -122,7 +122,7 @@ const SurveyPieChart = ({ data }) => {
     }));
 
     // Set the chart title
-    setTitle(data[0]?.title || 'Default Title');
+    setTitle(data.title || 'Default Title');
   }, [data, type, shape, colorMode, secondary, divider, warning, primary, success]);
 
   return (

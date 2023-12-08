@@ -53,8 +53,8 @@ const SurveyBarChart = ({ data }) => {
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    if (data?.[0]) {
-      const { title, categories, data: chartData } = data[0];
+    if (data) {
+      const { title, categories, data: chartData } = data;
 
       setOptions((prevState) => ({
         ...prevState,
