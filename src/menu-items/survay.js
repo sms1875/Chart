@@ -16,10 +16,10 @@ const survay = {
   type: 'group',
   children: [
     {
-      id: 'PDF',
-      title: 'PDF',
+      id: 'Results',
+      title: 'Results',
       type: 'item',
-      url: '/survay/pdf',
+      url: '/survay/results',
       icon: icons.PrinterOutlined
     }
   ]

@@ -31,15 +31,18 @@ const ChartGenerate = ({ data }) => {
         id="chart-type-select"
         size="small"
         select
+        label="Chart Type"
         value={selectedType}
         onChange={handleChangeType}
-        sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
+        sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' }, marginLeft: 'auto', mt: 2 }}
       >
         <MenuItem value="bar">Bar Chart</MenuItem>
         <MenuItem value="pie">Pie Chart</MenuItem>
         <MenuItem value="table">Table</MenuItem>
       </TextField>
-      {renderChartOrTable(selectedType)}
+      <Box sx={{ mt: 2 }}>
+        {renderChartOrTable(selectedType)}
+      </Box>
     </Box>
   );
 };

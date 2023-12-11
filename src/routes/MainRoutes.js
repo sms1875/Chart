@@ -9,7 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
-const PDF = Loadable(lazy(() => import('pages/survay/PDF')));
+const SurveyResults = Loadable(lazy(() => import('pages/survay/SurveyResults')));
 
 // render - utilities
 const Typography = Loadable(lazy(() => import('pages/components-overview/Typography')));
@@ -48,8 +48,8 @@ const MainRoutes = {
       path: 'survay',
       children: [
         {
-          path: 'pdf',
-          element: <PDF />
+          path: 'results',
+          element: <SurveyResults />
         }
       ]
     },

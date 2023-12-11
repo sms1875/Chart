@@ -85,7 +85,9 @@ const SurveyBarChart = ({ data }) => {
     <div id="chart">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">{title}</Typography>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            {title}
+          </Typography>
         </Grid>
         <Grid item />
         <TextField
@@ -94,7 +96,7 @@ const SurveyBarChart = ({ data }) => {
           select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' } }}
+          sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' }, marginLeft: 'auto' }}
         >
           {chartTypes.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -106,7 +108,7 @@ const SurveyBarChart = ({ data }) => {
       <MainCard sx={{ mt: 2 }} content={false}>
         <Box sx={{ p: 3, pb: 0 }}>
         </Box>
-        <ReactApexChart options={options} series={series} type={type} height={365} />
+        <ReactApexChart options={options} series={series} type={type} height={300} />
       </MainCard>
     </div>
   );
