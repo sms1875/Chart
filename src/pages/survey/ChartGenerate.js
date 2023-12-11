@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, MenuItem, TextField } from '@mui/material';
-import SurveyResultTable from './SurveyResultTable';
+import SurveyTable from './SurveyTable';
 import SurveyBarChart from './SurveyBarChart';
 import SurveyPieChart from './SurveyPieChart';
 
@@ -19,7 +19,7 @@ const ChartGenerate = ({ data }) => {
       case 'pie':
         return <SurveyPieChart data={data} />;
       case 'table':
-        return <SurveyResultTable data={data} />;
+        return <SurveyTable data={data} />;
       default:
         return null;
     }
