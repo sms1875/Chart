@@ -81,49 +81,57 @@ const pieChartOptions = {
   ],
 };
 
-const SurveyPieChart = ({ data }) => {
+const SurveyPieChart = ({ data, requiredResponses }) => {
   const theme = useTheme();
   const { secondary, divider, warning, primary, success } = theme.palette;
+
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(pieChartOptions);
-  const [colorMode, setColorMode] = useState('single');
+  const [colorMode, setColorMode] = useState('multiple');
   const [shape, setShape] = useState('full');
   const [type, setType] = useState('pie');
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    const categories = data.categories || Object.keys(data);
-    const values = data.data || Object.values(data);
-    const maxValue = Math.max(...values);
-    const minValue = Math.min(...values);
+    if (data) {
+      const { title, categories, data: chartData, requiredResponses } = data;
+      const values = data.data || Object.values(data);
+      const maxValue = Math.max(...values);
+      const minValue = Math.min(...values);
+      const totalResponses = chartData.reduce((sum, value) => sum + value, 0);
 
-    setSeries(values);
+      setSeries(values);
 
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      chart: { ...prevOptions.chart, type: type },
-      plotOptions: {
-        pie: {
-          ...prevOptions.plotOptions.pie,
-          startAngle: shape === 'full' ? 0 : -90,
-          endAngle: shape === 'full' ? 360 : 90,
+      setOptions((prevOptions) => ({
+        ...prevOptions,
+        chart: { ...prevOptions.chart, type: type },
+        plotOptions: {
+          pie: {
+            ...prevOptions.plotOptions.pie,
+            startAngle: shape === 'full' ? 0 : -90,
+            endAngle: shape === 'full' ? 360 : 90,
+          },
         },
-      },
-      colors: colorMode === 'single'
-        ? values.map((value) => getColorIntensity(value, maxValue, minValue))
-        : [warning.main, primary.main, success.dark, '#ff5733', '#ffbd33'],
-      labels: categories,
-      xaxis: {
-        labels: { style: { colors: Array(categories.length - 1).fill(secondary) } },
-      },
-      yaxis: { labels: { style: { colors: [secondary] } } },
-      grid: { borderColor: divider },
-      tooltip: { theme: 'light' },
-    }));
+        colors: colorMode === 'single'
+          ? values.map((value) => getColorIntensity(value, maxValue, minValue))
+          : [warning.main, primary.main, success.dark, '#ff5733', '#ffbd33'],
+        labels: categories,
+        xaxis: {
+          labels: { style: { colors: Array(categories.length - 1).fill(secondary) } },
+        },
+        yaxis: { labels: { style: { colors: [secondary] } } },
+        grid: { borderColor: divider },
+        tooltip: { theme: 'light' },
+      }));
 
-    // Set the chart title
-    setTitle(data.title || 'Default Title');
-  }, [data, type, shape, colorMode, secondary, divider, warning, primary, success]);
+      setTitle(
+        <span>
+          {title} ({totalResponses}명)
+          {requiredResponses && <Typography variant="body2" color="error">*필수 항목</Typography>}
+        </span>
+      );
+    }
+  }, [data, type, shape, colorMode, secondary, divider, warning, primary, success, requiredResponses]);
 
   return (
     <div id="chart">

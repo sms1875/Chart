@@ -91,9 +91,7 @@ const SurveyBarChart = ({ data, requiredResponses }) => {
     <div id="chart">
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            {title}
-          </Typography>
+          <Typography variant="h5">{title}</Typography>
         </Grid>
         <Grid item />
         <TextField
