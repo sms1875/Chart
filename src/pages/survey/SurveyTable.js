@@ -81,7 +81,7 @@ OrderTableHead.propTypes = {
   orderBy: PropTypes.string,
 };
 
-export default function SurveyResultTable({ data }) {
+export default function SurveyTable({ data }) {
   const [order] = useState('asc');
   const [orderBy] = useState('trackingNo');
   const [selected] = useState([]);
