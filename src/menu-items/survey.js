@@ -10,19 +10,19 @@ const icons = {
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE & DOCUMENTATION ||============================== //
 
-const survay = {
-  id: 'survay',
-  title: 'Survay',
+const survey = {
+  id: 'survey',
+  title: 'survey',
   type: 'group',
   children: [
     {
       id: 'Results',
       title: 'Results',
       type: 'item',
-      url: '/survay/results',
+      url: '/survey/results',
       icon: icons.PrinterOutlined
     }
   ]
 };
 
-export default survay;
+export default survey;

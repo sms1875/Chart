@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import ReactToPrint from 'react-to-print';
 import Report from "./Report";
 import { Button, Grid, TextField, MenuItem } from "@mui/material";
+import { PrinterOutlined } from '@ant-design/icons';
+
 
 const surveyItems = [
   {
@@ -71,9 +73,11 @@ const surveys = {
   ],
 };
 
+const ALL_OPTIONS = '전체'; 
+
 const SurveyResults = () => {
   const ref = useRef();
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState(ALL_OPTIONS);
   const [filterValue, setFilterValue] = useState("");
 
   const handleFilterTypeChange = (event) => {
@@ -99,7 +103,7 @@ const SurveyResults = () => {
         <ReactToPrint
           trigger={() => (
             <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              리포트 출력
+              <PrinterOutlined /> 
             </Button>
           )}
           content={() => ref.current}
@@ -117,7 +121,7 @@ const SurveyResults = () => {
               onChange={handleFilterTypeChange}
               fullWidth
             >
-              <MenuItem value="">전체</MenuItem>
+              <MenuItem value={ALL_OPTIONS}>{ALL_OPTIONS}</MenuItem>
               {surveyItems.map((item) => (
                 <MenuItem key={item.title} value={item.title}>
                   {item.title}
@@ -125,7 +129,7 @@ const SurveyResults = () => {
               ))}
             </TextField>
           </Grid>
-          {filterType && (
+          {filterType && filterType !== ALL_OPTIONS && (
             <Grid item xs={12} md={6} lg={6}>
               <TextField
                 id="filter-value-select"

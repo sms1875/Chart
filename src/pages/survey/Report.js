@@ -56,7 +56,6 @@ const Report = forwardRef(
       >
         {surveyData.map((data, index) => (
           <Grid item xs={8} md={8} lg={8} key={data.title || index}>
-            {/* Assuming ChartGenerate component expects data in a specific format */}
             <ChartGenerate data={data} />
           </Grid>
         ))}
