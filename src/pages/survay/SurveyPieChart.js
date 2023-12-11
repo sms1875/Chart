@@ -28,8 +28,8 @@ const pieChartOptions = {
   chart: {
     type: 'pie',
     height: 430,
-    toolbar: { 
-      show: false 
+    toolbar: {
+      show: false
     },
   },
   plotOptions: {

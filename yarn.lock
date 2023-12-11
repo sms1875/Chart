@@ -8464,6 +8464,11 @@
     "prismjs" "^1.27.0"
     "refractor" "^3.6.0"
 
+"react-to-print@^2.14.15":
+  "integrity" "sha512-SKnwOzU2cJ8eaAkoJO7+gNhvfEDmm+Y34IdcHsjtHioUevUPhprqbVtvNJlZ2JkGJ8ExK2QNWM9pXECTDR5D8w=="
+  "resolved" "https://registry.npmjs.org/react-to-print/-/react-to-print-2.14.15.tgz"
+  "version" "2.14.15"
+
 "react-transition-group@^4.4.5":
   "integrity" "sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g=="
   "resolved" "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.5.tgz"
