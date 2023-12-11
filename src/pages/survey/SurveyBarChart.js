@@ -55,6 +55,8 @@ const SurveyBarChart = ({ data }) => {
   useEffect(() => {
     if (data) {
       const { title, categories, data: chartData } = data;
+      const totalResponses = chartData.reduce((sum, value) => sum + value, 0);
+
 
       setOptions((prevState) => ({
         ...prevState,
@@ -77,7 +79,7 @@ const SurveyBarChart = ({ data }) => {
       }));
 
       setSeries([{ data: chartData }]);
-      setTitle(title);
+      setTitle(`${title} (${totalResponses}명)`);
     }
   }, [data, info, secondary, type]);
 
