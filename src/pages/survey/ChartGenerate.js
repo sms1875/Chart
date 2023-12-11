@@ -4,6 +4,7 @@ import { Box, MenuItem, TextField } from '@mui/material';
 import SurveyTable from './SurveyTable';
 import SurveyBarChart from './SurveyBarChart';
 import SurveyPieChart from './SurveyPieChart';
+import SurveyStackBarChart from './SurveyStackBarChart';
 
 const ChartGenerate = ({ data }) => {
   const [selectedType, setSelectedType] = useState('bar');
@@ -15,7 +16,10 @@ const ChartGenerate = ({ data }) => {
   const renderChartOrTable = (type) => {
     switch (type) {
       case 'bar':
+        console.log(data);
         return <SurveyBarChart data={data} />;
+        case 'stack':
+        return <SurveyStackBarChart data={data} />;
       case 'pie':
         return <SurveyPieChart data={data} />;
       case 'table':
@@ -37,6 +41,7 @@ const ChartGenerate = ({ data }) => {
         sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' }, marginLeft: 'auto', mt: 2 }}
       >
         <MenuItem value="bar">Bar Chart</MenuItem>
+        <MenuItem value="stack">stack</MenuItem>
         <MenuItem value="pie">Pie Chart</MenuItem>
         <MenuItem value="table">Table</MenuItem>
       </TextField>
