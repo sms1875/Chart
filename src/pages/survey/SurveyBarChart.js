@@ -42,7 +42,7 @@ const barChartOptions = {
   },
 };
 
-const SurveyBarChart = ({ data }) => {
+const SurveyBarChart = ({ data, requiredResponses }) => {
   const theme = useTheme();
   const info = theme.palette.info.light;
   const { secondary } = theme.palette.text;
@@ -54,9 +54,8 @@ const SurveyBarChart = ({ data }) => {
 
   useEffect(() => {
     if (data) {
-      const { title, categories, data: chartData } = data;
+      const { title, categories, data: chartData, requiredResponses } = data;
       const totalResponses = chartData.reduce((sum, value) => sum + value, 0);
-
 
       setOptions((prevState) => ({
         ...prevState,
@@ -79,9 +78,14 @@ const SurveyBarChart = ({ data }) => {
       }));
 
       setSeries([{ data: chartData }]);
-      setTitle(`${title} (${totalResponses}명)`);
+      setTitle(
+        <span>
+          {title} ({totalResponses}명)
+          {requiredResponses && <Typography variant="body2" color="error">*필수 항목</Typography>}
+        </span>
+      );
     }
-  }, [data, info, secondary, type]);
+  }, [data, info, secondary, type, requiredResponses]);
 
   return (
     <div id="chart">

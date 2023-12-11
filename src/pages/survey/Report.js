@@ -14,6 +14,7 @@ const generateData = (surveyItems, surveys, filterType, filterValue) => {
       title: item.title,
       categories: item.categories,
       data: Array(item.categories.length).fill(0),
+      requiredResponses: item.requiredResponses, // Add requiredResponses property
     };
   });
 
@@ -56,7 +57,7 @@ const Report = forwardRef(
       >
         {surveyData.map((data, index) => (
           <Grid item xs={8} md={8} lg={8} key={data.title || index}>
-            <ChartGenerate data={data} />
+            <ChartGenerate data={data} requiredResponses={data.requiredResponses} />
           </Grid>
         ))}
       </Grid>
