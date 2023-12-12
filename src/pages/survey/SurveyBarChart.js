@@ -1,116 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, MenuItem, TextField, Typography, useTheme } from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
-import MainCard from 'components/MainCard';
+import { DefaultChartOptions } from './ChartOptions';
 
-const chartTypes = [
-  { value: 'bar', label: 'Bar' },
-  { value: 'area', label: 'Area' },
-];
-
-const barChartOptions = {
-  chart: {
-    type: 'bar',
-    height: 365,
-    toolbar: {
-      show: false,
-    },
-  },
-  plotOptions: {
-    bar: {
-      columnWidth: '45%',
-      borderRadius: 4,
-    },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  xaxis: {
-    categories: [], // Categories will be dynamically set
-    axisBorder: {
-      show: false,
-    },
-    axisTicks: {
-      show: false,
-    },
-  },
-  yaxis: {
-    show: false,
-  },
-  grid: {
-    show: false,
-  },
-};
-
-const SurveyBarChart = ({ data }) => {
-  const theme = useTheme();
-  const info = theme.palette.info.light;
-  const { secondary } = theme.palette.text;
-
+const SurveyBarChart = ({ data, labelFormat }) => {
   const [series, setSeries] = useState([]);
-  const [options, setOptions] = useState(barChartOptions);
-  const [type, setType] = useState('bar');
-  const [title, setTitle] = useState('');
+  const [options, setOptions] = useState(DefaultChartOptions);
 
   useEffect(() => {
     if (data) {
-      const { title, categories, data: chartData } = data;
+      const { categories, data: chartData } = data;
+      const totalResponses = chartData.reduce((sum, value) => sum + value, 0);
 
-      setOptions((prevState) => ({
-        ...prevState,
-        chart: {
-          ...prevState.chart,
-          type,
+      setSeries(categories.map((category, index) => ({ name: category, data: [chartData[index]] })));
+
+      setOptions((prevOptions) => ({
+        ...prevOptions,
+        chart: { ...prevOptions.chart, type: 'bar' },
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            borderRadius: 4,
+          },
         },
-        colors: [info],
-        xaxis: {
-          categories,
+        labels: categories,
+        yaxis: {
+          show: true,
           labels: {
-            style: {
-              colors: Array(categories.length).fill(secondary),
+            formatter: function (val) {
+              return labelFormat === 'none' ? '' : val;
             },
           },
         },
-        tooltip: {
-          theme: 'light',
+        grid: {
+          show: true,
+          xaxis: {
+            show: false,
+          },
+        },
+        legend: {
+          position: 'bottom',
+          formatter: function (val, opts) {
+            return val + " - " + opts.w.globals.series[opts.seriesIndex];
+          },
+        },
+        dataLabels: {
+          enabled: (labelFormat !== 'none'),
+          textAnchor: 'middle',
+          formatter: function (val, opts) {
+            if (labelFormat === 'percentage') {
+              return (val / totalResponses * 100).toFixed(1) + "%";
+            } else {
+              return opts.w.globals.series[opts.seriesIndex];
+            }
+          },
         },
       }));
-
-      setSeries([{ data: chartData }]);
-      setTitle(title);
     }
-  }, [data, info, secondary, type]);
+  }, [data, labelFormat]);
 
   return (
-    <div id="chart">
-      <Grid container alignItems="center" justifyContent="space-between">
-        <Grid item>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            {title}
-          </Typography>
-        </Grid>
-        <Grid item />
-        <TextField
-          id="standard-select-currency"
-          size="small"
-          select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          sx={{ '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' }, marginLeft: 'auto' }}
-        >
-          {chartTypes.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Grid>
-      <MainCard sx={{ mt: 2 }} content={false}>
-        <Box sx={{ p: 3, pb: 0 }}>
-        </Box>
-        <ReactApexChart options={options} series={series} type={type} height={300} />
-      </MainCard>
-    </div>
+    <ReactApexChart options={options} series={series} type="bar" />
   );
 };
 
