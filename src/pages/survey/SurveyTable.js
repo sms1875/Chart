@@ -40,6 +40,7 @@ const headCells = [
   { id: 'trackingNo', align: 'left', disablePadding: false, label: '번호' },
   { id: 'name', align: 'left', disablePadding: true, label: '항목' },
   { id: 'satisfactionLevel', align: 'left', disablePadding: false, label: '응답 수' },
+  { id: 'responseRatio', align: 'left', disablePadding: false, label: '응답 비율' }, // New column
 ];
 
 const SurveyTable = ({ data }) => {
@@ -97,6 +98,7 @@ const SurveyTable = ({ data }) => {
                   trackingNo: index + 1,
                   name: category,
                   satisfactionLevel: satisfactionData[index],
+                  responseRatio: (satisfactionData[index] / respondentsCount * 100).toFixed(1) + '%',
                 })),
                 getComparator(order, orderBy)
               ).map((row, index) => {
@@ -118,6 +120,7 @@ const SurveyTable = ({ data }) => {
                     </TableCell>
                     <TableCell align="left">{row.name}</TableCell>
                     <TableCell align="left">{row.satisfactionLevel}</TableCell>
+                    <TableCell align="left">{row.responseRatio}</TableCell> {/* New column */}
                   </TableRow>
                 );
               })}
