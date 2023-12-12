@@ -52,11 +52,16 @@ const Report = forwardRef(
         className="App print-styles"
         rowSpacing={3}
         columnSpacing={3}
-        sx={{ "@media print": { margin: "10mm" } }}
+        sx={{
+          height: '29.7cm', 
+          width: '21cm', 
+          margin: '0 auto',
+          "@media print": { margin: "10mm" }
+        }}
         ref={ref}
       >
         {surveyData.map((data, index) => (
-          <Grid item xs={8} md={8} lg={8} key={data.title || index}>
+          <Grid item key={data.title || index}>
             <ChartGenerate data={data} requiredResponses={data.requiredResponses} />
           </Grid>
         ))}

@@ -4,7 +4,7 @@ import Report from "./Report";
 import { Button, Grid, TextField, MenuItem } from "@mui/material";
 import { PrinterOutlined } from '@ant-design/icons';
 
-const ALL_OPTIONS = '전체'; 
+const ALL_OPTIONS = '전체';
 
 const SurveyResults = () => {
   const ref = useRef();
@@ -34,7 +34,7 @@ const SurveyResults = () => {
         <ReactToPrint
           trigger={() => (
             <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              <PrinterOutlined /> 
+              <PrinterOutlined />
             </Button>
           )}
           content={() => ref.current}
@@ -133,7 +133,7 @@ const generateRandomSurveyData = () => {
 
   const generateRandomSurvey = () => {
     const surveyData = {};
-    
+
     surveyItems.forEach((item) => {
       const randomOption = getRandomOption(item.categories);
       surveyData[item.title] = item.requiredResponses ? randomOption : (Math.random() < 0.5 ? randomOption : null);
@@ -142,7 +142,7 @@ const generateRandomSurveyData = () => {
     return surveyData;
   };
 
-  const generatedSurveys = Array.from({ length: 20 }, () => generateRandomSurvey());
+  const generatedSurveys = Array.from({ length: 100 }, () => generateRandomSurvey());
   return generatedSurveys;
 };
 
