@@ -26,6 +26,18 @@ const SurveyResults = () => {
     return selectedCategory ? selectedCategory.categories : [];
   };
 
+  const renderFilterMenuItem = (item) => (
+    <MenuItem key={item.title} value={item.title}>
+      {item.title}
+    </MenuItem>
+  );
+
+  const renderFilterValueMenuItem = (category) => (
+    <MenuItem key={category} value={category}>
+      {category}
+    </MenuItem>
+  );
+
   const defaultFilterValue = filterType ? getFilterCategories()[0] : "";
 
   return (
@@ -42,43 +54,29 @@ const SurveyResults = () => {
         />
       </Grid>
       <Grid item>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={6}>
-            <TextField
-              id="filter-type-select"
-              select
-              label="Filter Type"
-              value={filterType}
-              onChange={handleFilterTypeChange}
-              fullWidth
-            >
-              <MenuItem value={ALL_OPTIONS}>{ALL_OPTIONS}</MenuItem>
-              {surveyItems.map((item) => (
-                <MenuItem key={item.title} value={item.title}>
-                  {item.title}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          {filterType && filterType !== ALL_OPTIONS && (
-            <Grid item xs={12} md={6} lg={6}>
-              <TextField
-                id="filter-value-select"
-                select
-                label={`Filter Value (${filterType})`}
-                value={filterValue || defaultFilterValue}
-                onChange={handleFilterValueChange}
-                fullWidth
-              >
-                {getFilterCategories().map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          )}
-        </Grid>
+        <TextField
+          id="filter-type-select"
+          select
+          label="Filter Type"
+          value={filterType}
+          onChange={handleFilterTypeChange}
+          fullWidth
+        >
+          <MenuItem value={ALL_OPTIONS}>{ALL_OPTIONS}</MenuItem>
+          {surveyItems.map(renderFilterMenuItem)}
+        </TextField>
+        {filterType && filterType !== ALL_OPTIONS && (
+          <TextField
+            id="filter-value-select"
+            select
+            label={`Filter Value (${filterType})`}
+            value={filterValue || defaultFilterValue}
+            onChange={handleFilterValueChange}
+            fullWidth
+          >
+            {getFilterCategories().map(renderFilterValueMenuItem)}
+          </TextField>
+        )}
       </Grid>
       <Grid item>
         <Report
@@ -126,10 +124,7 @@ const surveyItems = [
 ];
 
 const generateRandomSurveyData = () => {
-  const getRandomOption = (options) => {
-    const randomIndex = Math.floor(Math.random() * options.length);
-    return options[randomIndex];
-  };
+  const getRandomOption = (options) => options[Math.floor(Math.random() * options.length)];
 
   const generateRandomSurvey = () => {
     const surveyData = {};
@@ -142,7 +137,7 @@ const generateRandomSurveyData = () => {
     return surveyData;
   };
 
-  const generatedSurveys = Array.from({ length: 120 }, () => generateRandomSurvey());
+  const generatedSurveys = Array.from({ length: 120 }, generateRandomSurvey);
   return generatedSurveys;
 };
 

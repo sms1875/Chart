@@ -111,8 +111,10 @@ const ChartGenerate = ({ data }) => {
 
 ChartGenerate.propTypes = {
   data: PropTypes.shape({
+    title: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.string),
     data: PropTypes.arrayOf(PropTypes.number),
+    requiredResponses: PropTypes.bool,
   }).isRequired,
 };
 
