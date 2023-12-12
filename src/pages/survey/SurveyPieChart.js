@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { DefaultChartOptions } from './ChartConstants';
+import { DefaultChartOptions } from './ChartOptions';
 
 const SurveyPieChart = ({ data, type, shape, labelFormat }) => {
   const [series, setSeries] = useState([]);

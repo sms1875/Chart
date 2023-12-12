@@ -33,11 +33,6 @@ export const DefaultChartOptions = {
     },
 };
 
-export const colorModes = [
-    { value: 'single', label: 'Single Color' },
-    { value: 'multiple', label: 'Multiple Colors' },
-];
-
 export const pieChartShapes = [
     { value: 'full', label: 'Full' },
     { value: 'half', label: 'Half' },

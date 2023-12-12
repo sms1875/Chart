@@ -5,7 +5,7 @@ import SurveyTable from './SurveyTable';
 import SurveyBarChart from './SurveyBarChart';
 import SurveyPieChart from './SurveyPieChart';
 import SurveyStackBarChart from './SurveyStackBarChart';
-import { pieChartShapes } from './ChartConstants';
+import { pieChartShapes } from './ChartOptions';
 import MainCard from 'components/MainCard';
 
 const ChartGenerate = ({ data }) => {
@@ -20,58 +20,26 @@ const ChartGenerate = ({ data }) => {
       const totalResponses = chartData.reduce((sum, value) => sum + value, 0);
 
       setChartTitle(
-        <span>
+        <Box>
           {title} ({totalResponses}명)
-          {requiredResponses ? <Typography variant="body2" color="error">*필수 항목</Typography> : <Box sx={{ mt: 2 }} />}
-        </span>
+          {requiredResponses ? <Typography variant="body2" color="error">*필수 항목</Typography> : <Box sx={{ mt: 4 }} />}
+        </Box>
       );
     }
   }, [data, selectedType, selectedShape, selectedLabelFormat]);
 
-  const handleChangeType = (event) => {
-    setSelectedType(event.target.value);
+  const handleChange = (event, setter) => {
+    setter(event.target.value);
   };
 
-  const handleChangeShape = (event) => {
-    setSelectedShape(event.target.value);
-  };
-
-  const handleChangeLabelFormat = (event) => {
-    setSelectedLabelFormat(event.target.value);
-  };
-
-  const renderChartOrTable = (type) => {
-    switch (type) {
-      case 'bar':
-        return <SurveyBarChart key={selectedLabelFormat} data={data} labelFormat={selectedLabelFormat} />;
-      case 'stack':
-        return <SurveyStackBarChart key={selectedLabelFormat} data={data} labelFormat={selectedLabelFormat} />;
-      case 'pie':
-      case 'donut':
-        return (
-          <SurveyPieChart
-            key={selectedLabelFormat}
-            data={data}
-            type={selectedType}
-            shape={selectedShape}
-            labelFormat={selectedLabelFormat}
-          />
-        );
-      case 'table':
-        return <SurveyTable data={data} />;
-      default:
-        return null;
-    }
-  };
-
-  const renderSelectField = (id, label, value, onChange, items) => (
+  const renderSelectField = (id, label, value, items, setter) => (
     <TextField
       id={id}
       size="small"
       select
       label={label}
       value={value}
-      onChange={onChange}
+      onChange={(event) => handleChange(event, setter)}
       sx={{
         '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
         marginLeft: 'auto',
@@ -87,32 +55,54 @@ const ChartGenerate = ({ data }) => {
     </TextField>
   );
 
+  const renderChart = () => {
+    const chartProps = { data, type: selectedType, shape: selectedShape, labelFormat: selectedLabelFormat };
+
+    switch (selectedType) {
+      case 'bar':
+        return <SurveyBarChart key={selectedLabelFormat} {...chartProps} />;
+      case 'stack':
+        return <SurveyStackBarChart key={selectedLabelFormat} {...chartProps} />;
+      case 'pie':
+      case 'donut':
+        return <SurveyPieChart key={selectedLabelFormat} {...chartProps} />;
+      case 'table':
+        return <SurveyTable data={data} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box>
-      {renderSelectField('chart-type-select', 'Chart Type', selectedType, handleChangeType, [
+      {renderSelectField('chart-type-select', 'Chart Type', selectedType, [
         { value: 'bar', label: 'Bar Chart' },
         { value: 'stack', label: 'Stack' },
         { value: 'pie', label: 'Pie Chart' },
         { value: 'donut', label: 'Donut' },
         { value: 'table', label: 'Table' },
-      ])}
+      ], setSelectedType)}
 
-      {(selectedType !== 'table') && renderSelectField('chart-label-format-select', 'Data Label Format', selectedLabelFormat, handleChangeLabelFormat, [
+      {(selectedType !== 'table') && renderSelectField('chart-label-format-select', 'Data Label Format', selectedLabelFormat, [
         { value: 'none', label: 'None' },
         { value: 'percentage', label: 'Percentage' },
         { value: 'value', label: 'Value' },
-      ])}
+      ], setSelectedLabelFormat)}
 
       {(selectedType === 'pie' || selectedType === 'donut') && (
         <>
-          {renderSelectField('chart-mode-select', 'Chart Shape', selectedShape, handleChangeShape, pieChartShapes)}
+          {renderSelectField('chart-mode-select', 'Chart Shape', selectedShape, pieChartShapes, setSelectedShape)}
         </>
       )}
 
       <Box sx={{ mt: 2 }}>
-        <Typography variant="h5">{chartTitle}</Typography>
+        {chartTitle && (
+          <Typography variant="h5">
+            {chartTitle}
+          </Typography>
+        )}
         <MainCard sx={{ mt: 2 }} content={false}>
-          {renderChartOrTable(selectedType)}
+          {renderChart()}
         </MainCard>
       </Box>
     </Box>
