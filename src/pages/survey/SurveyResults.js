@@ -142,7 +142,7 @@ const generateRandomSurveyData = () => {
     return surveyData;
   };
 
-  const generatedSurveys = Array.from({ length: 100 }, () => generateRandomSurvey());
+  const generatedSurveys = Array.from({ length: 120 }, () => generateRandomSurvey());
   return generatedSurveys;
 };
 
