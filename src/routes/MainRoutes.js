@@ -18,6 +18,7 @@ const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 
 // ==============================|| MAIN ROUTING ||============================== //
+import { surveyItem1, generatedData1, surveyItem2, generatedData2 } from 'routes/surveyData';
 
 const MainRoutes = {
   path: '/',
@@ -49,7 +50,11 @@ const MainRoutes = {
       children: [
         {
           path: 'results',
-          element: <SurveyResults />
+          element: <SurveyResults surveyItems={surveyItem1} generatedData={generatedData1} />
+        },
+        {
+          path: 'results2',
+          element: <SurveyResults surveyItems={surveyItem2} generatedData={generatedData2} />
         }
       ]
     },

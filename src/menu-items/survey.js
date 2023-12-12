@@ -21,6 +21,13 @@ const survey = {
       type: 'item',
       url: '/survey/results',
       icon: icons.PrinterOutlined
+    },
+    {
+      id: 'Results2',
+      title: 'Results2',
+      type: 'item',
+      url: '/survey/results2',
+      icon: icons.PrinterOutlined
     }
   ]
 };

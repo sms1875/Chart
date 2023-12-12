@@ -6,7 +6,7 @@ import { PrinterOutlined } from '@ant-design/icons';
 
 const ALL_OPTIONS = '전체';
 
-const SurveyResults = () => {
+const SurveyResults = ({ surveyItems, generatedData }) => {
   const ref = useRef();
   const [filterType, setFilterType] = useState(ALL_OPTIONS);
   const [filterValue, setFilterValue] = useState("");
@@ -94,54 +94,3 @@ const SurveyResults = () => {
 };
 
 export default SurveyResults;
-
-const surveyItems = [
-  {
-    title: '응답자 성별',
-    categories: ['남성', '여성', '기타'],
-    requiredResponses: true,
-  },
-  {
-    title: '응답자 나이대',
-    categories: ['10대', '20대', '30대', '40대', '50대 이상'],
-    requiredResponses: true,
-  },
-  {
-    title: '만족도 조사',
-    categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
-    requiredResponses: true,
-  },
-  {
-    title: '재구매 의사',
-    categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
-    requiredResponses: false,
-  },
-  {
-    title: '음식 맛 평가',
-    categories: ['매우맛있음', '맛있음', '보통', '별로', '매우별로'],
-    requiredResponses: false,
-  },
-];
-
-const generateRandomSurveyData = () => {
-  const getRandomOption = (options) => options[Math.floor(Math.random() * options.length)];
-
-  const generateRandomSurvey = () => {
-    const surveyData = {};
-
-    surveyItems.forEach((item) => {
-      const randomOption = getRandomOption(item.categories);
-      surveyData[item.title] = item.requiredResponses ? randomOption : (Math.random() < 0.5 ? randomOption : null);
-    });
-
-    return surveyData;
-  };
-
-  const generatedSurveys = Array.from({ length: 120 }, generateRandomSurvey);
-  return generatedSurveys;
-};
-
-const generatedData = {
-  surveys: generateRandomSurveyData(),
-};
-
