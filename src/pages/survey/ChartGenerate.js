@@ -10,7 +10,7 @@ import { pieChartShapes } from './ChartConstants';
 const ChartGenerate = ({ data }) => {
   const [selectedType, setSelectedType] = useState('bar');
   const [selectedShape, setSelectedShape] = useState('full');
-  const [selectedLabelFormat, setSelectedLabelFormat] = useState('none'); // Add state for selectedLabelFormat
+  const [selectedLabelFormat, setSelectedLabelFormat] = useState('none');
 
   const handleChangeType = (event) => {
     setSelectedType(event.target.value);
@@ -34,7 +34,7 @@ const ChartGenerate = ({ data }) => {
       case 'donut':
         return (
           <SurveyPieChart
-            key={selectedLabelFormat} // Add key prop to force re-render
+            key={selectedLabelFormat}
             data={data}
             type={selectedType}
             shape={selectedShape}
@@ -48,75 +48,54 @@ const ChartGenerate = ({ data }) => {
     }
   };
 
+  const renderSelectField = (id, label, value, onChange, items) => (
+    <TextField
+      id={id}
+      size="small"
+      select
+      label={label}
+      value={value}
+      onChange={onChange}
+      sx={{
+        '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
+        marginLeft: 'auto',
+        mt: 2,
+        "@media print": { display: 'none' }
+      }}
+    >
+      {items.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+  );
+
   return (
     <Box>
-      <TextField
-        id="chart-type-select"
-        size="small"
-        select
-        label="Chart Type"
-        value={selectedType}
-        onChange={handleChangeType}
-        sx={{
-          '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
-          marginLeft: 'auto',
-          mt: 2,
-          "@media print": { display: 'none' }
-        }} >
-        <MenuItem value="bar">Bar Chart</MenuItem>
-        <MenuItem value="stack">Stack</MenuItem>
-        <MenuItem value="pie">Pie Chart</MenuItem>
-        <MenuItem value="donut">Donut</MenuItem>
-        <MenuItem value="table">Table</MenuItem>
-      </TextField>
-      {(selectedType !== 'table') && (
-        <TextField
-          id="chart-label-format-select"
-          size="small"
-          select
-          label="Data Label Format"
-          value={selectedLabelFormat}
-          onChange={handleChangeLabelFormat}
-          sx={{
-            '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
-            marginLeft: 'auto',
-            mt: 2,
-            "@media print": { display: 'none' }
-          }} >
-          <MenuItem value="none">none</MenuItem>
-          <MenuItem value="percentage">Percentage</MenuItem>
-          <MenuItem value="value">Value</MenuItem>
-        </TextField>
-      )}
+      {renderSelectField('chart-type-select', 'Chart Type', selectedType, handleChangeType, [
+        { value: 'bar', label: 'Bar Chart' },
+        { value: 'stack', label: 'Stack' },
+        { value: 'pie', label: 'Pie Chart' },
+        { value: 'donut', label: 'Donut' },
+        { value: 'table', label: 'Table' },
+      ])}
+
+      {(selectedType !== 'table') && renderSelectField('chart-label-format-select', 'Data Label Format', selectedLabelFormat, handleChangeLabelFormat, [
+        { value: 'none', label: 'None' },
+        { value: 'percentage', label: 'Percentage' },
+        { value: 'value', label: 'Value' },
+      ])}
+
       {(selectedType === 'pie' || selectedType === 'donut') && (
         <>
-          <TextField
-            id="chart-mode-select"
-            size="small"
-            select
-            label="Chart Shape"
-            value={selectedShape}
-            onChange={handleChangeShape}
-            sx={{
-              '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
-              marginLeft: 'auto',
-              mt: 2,
-              "@media print": { display: 'none' }
-            }}
-          >
-            {pieChartShapes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-
+          {renderSelectField('chart-mode-select', 'Chart Shape', selectedShape, handleChangeShape, pieChartShapes)}
         </>
       )}
+
       <Box sx={{ mt: 2 }}>
         {renderChartOrTable(selectedType)}
       </Box>
-
     </Box>
   );
 };
