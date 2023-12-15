@@ -1,21 +1,23 @@
 ## 구조
 
+# Project Structure
+
 |-- SurveyList
-|   |
-|   |-- SurveyResults
-|   |   |
-|   |   |-- FilterSection
-|   |   |-- PrintButton
-|   |   |-- SurveyReport
-|   |       |
-|   |       |-- ChartRenderer
-|   |           |
-|   |           |-- SurveyCharts
-|   |               |
-|   |               |-- BarChart
-|   |               |-- StackBarChart
-|   |               |-- CircleChart
-|   |               |-- Table
+| |
+| |-- SurveyResults
+| | |
+| | |-- FilterSection
+| | |-- PrintButton
+| | |-- SurveyReport
+| | | |
+| | | |-- ChartRenderer
+| | | | |
+| | | | |-- SurveyCharts
+| | | | | |
+| | | | | |-- BarChart
+| | | | | |-- StackBarChart
+| | | | | |-- CircleChart
+| | | | | |-- Table
 
 ## Documentation
 
