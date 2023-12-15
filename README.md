@@ -1,4 +1,21 @@
+## 구조
 
+|-- SurveyList
+|   |
+|   |-- SurveyResults
+|   |   |
+|   |   |-- FilterSection
+|   |   |-- PrintButton
+|   |   |-- SurveyReport
+|   |       |
+|   |       |-- ChartRenderer
+|   |           |
+|   |           |-- SurveyCharts
+|   |               |
+|   |               |-- BarChart
+|   |               |-- StackBarChart
+|   |               |-- CircleChart
+|   |               |-- Table
 
 ## Documentation
 
