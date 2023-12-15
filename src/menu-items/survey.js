@@ -19,16 +19,9 @@ const survey = {
       id: 'Results',
       title: 'Results',
       type: 'item',
-      url: '/survey/results',
+      url: '/survey/list',
       icon: icons.PrinterOutlined
     },
-    {
-      id: 'Results2',
-      title: 'Results2',
-      type: 'item',
-      url: '/survey/results2',
-      icon: icons.PrinterOutlined
-    }
   ]
 };
 

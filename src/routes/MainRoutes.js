@@ -10,6 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
 const SurveyResults = Loadable(lazy(() => import('pages/survey/SurveyResults')));
+const SurveyList = Loadable(lazy(() => import('pages/survey/SurveyList')));
 
 // render - utilities
 const Typography = Loadable(lazy(() => import('pages/components-overview/Typography')));
@@ -18,7 +19,8 @@ const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 
 // ==============================|| MAIN ROUTING ||============================== //
-import { surveyItem1, generatedData1, surveyItem2, generatedData2 } from 'routes/surveyData';
+import { surveyList } from 'routes/surveyData';
+
 
 const MainRoutes = {
   path: '/',
@@ -49,13 +51,13 @@ const MainRoutes = {
       path: 'survey',
       children: [
         {
-          path: 'results',
-          element: <SurveyResults surveyItems={surveyItem1} generatedData={generatedData1} />
+          path: 'list',
+          element: <SurveyList surveyList={surveyList} />,
         },
-        {
-          path: 'results2',
-          element: <SurveyResults surveyItems={surveyItem2} generatedData={generatedData2} />
-        }
+        ...surveyList.map((survey) => ({
+          path: `result/${survey.id}`,
+          element: <SurveyResults surveyItems={survey.items} generatedData={survey.generatedData} />,
+        })),
       ]
     },
     {

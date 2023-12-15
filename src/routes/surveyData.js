@@ -79,3 +79,20 @@ export const generatedData1 = {
 export const generatedData2 = {
     surveys: generateRandomSurveyData(surveyItem2),
 };
+
+export const surveyList = [
+    {
+        id: 1,
+        title: '설문조사 1',
+        description: '설문조사 1에 대한 설명',
+        items: surveyItem1,
+        generatedData: generatedData1,
+    },
+    {
+        id: 2,
+        title: '설문조사 2',
+        description: '설문조사 2에 대한 설명',
+        items: surveyItem2,
+        generatedData: generatedData2,
+    },
+];
