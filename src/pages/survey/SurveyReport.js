@@ -82,7 +82,11 @@ const SurveyReport = forwardRef(
       >
         {/* 생성된 데이터를 이용하여 차트를 렌더링 */}
         {aggregatedData.map((data, index) => (
-          <Grid item key={data.title || index}>
+          <Grid
+            item
+            key={data.title || index}
+            sx={{ "@media print": { pageBreakBefore: 'always' } }}
+          >
             <ChartRenderer data={data} requiredResponses={data.requiredResponses} />
           </Grid>
         ))}
