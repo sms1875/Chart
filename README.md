@@ -16,7 +16,7 @@
 | | | | | |
 | | | | | |-- BarChart
 | | | | | |-- StackBarChart
-| | | | | |-- CircleChart
+| | | | | |-- CircleChart  
 | | | | | |-- Table
 
 ## Documentation
