@@ -1,39 +1,45 @@
+/**
+ * 기본 차트 옵션
+ */
 export const DefaultChartOptions = {
     chart: {
-        toolbar: {
-            show: false,
-        },
-        zoom: {
-            enabled: false
-        },
-        height: 'auto'
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
+      height: 'auto',
     },
     dataLabels: {
-        enabled: false,
+      enabled: false,
     },
     xaxis: {
-        labels: {
-            show: false
-        },
-        axisBorder: {
-            show: false,
-        },
-        axisTicks: {
-            show: false,
-        },
+      labels: {
+        show: false,
+      },
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
+      },
     },
     yaxis: {
-        show: false,
+      show: false,
     },
     grid: {
-        show: false,
+      show: false,
     },
     tooltip: {
-        enabled: false,
+      enabled: false,
     },
-};
-
-export const pieChartShapes = [
-    { value: 'full', label: 'Full' },
-    { value: 'half', label: 'Half' },
-];
+  };
+  
+  /**
+   * 파이 차트 모양 옵션
+   */
+  export const pieChartShapes = [
+    { value: 'full', label: '전체' },
+    { value: 'half', label: '반쪽' },
+  ];

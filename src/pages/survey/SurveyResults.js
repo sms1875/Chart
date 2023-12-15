@@ -1,92 +1,78 @@
-import React, { useState, useRef } from "react";
-import ReactToPrint from 'react-to-print';
-import Report from "./Report";
-import { Button, Grid, TextField, MenuItem } from "@mui/material";
-import { PrinterOutlined } from '@ant-design/icons';
+import React, { useState, useRef, useCallback } from "react";
+import SurveyReport from "./SurveyReport";
+import PrintButton from "./PrintButton";
+import FilterSection from "./FilterSection";
+import { Grid } from "@mui/material";
 
+// "전체" 옵션을 나타내는 상수
 const ALL_OPTIONS = '전체';
 
-const SurveyResults = () => {
-  const ref = useRef();
+/**
+ * 설문 결과를 표시하는 컴포넌트
+ * @param {Object} props - 컴포넌트 속성
+ * @param {Array} props.surveyItems - 설문 항목 목록
+ * @param {Object} props.generatedData - 생성된 설문 데이터
+ * @returns {JSX.Element} - 렌더링된 설문 결과 컴포넌트
+ */
+const SurveyResults = ({ surveyItems, generatedData }) => {
+  // 프린트를 위한 레퍼런스
+  const printRef = useRef();
+
+  // 필터 상태를 관리하는 상태
   const [filterType, setFilterType] = useState(ALL_OPTIONS);
   const [filterValue, setFilterValue] = useState("");
 
-  const handleFilterTypeChange = (event) => {
-    const newFilterType = event.target.value;
-    setFilterType(newFilterType);
-    setFilterValue(""); // Reset filter value when filter type changes
-  };
+  /**
+   * 필터 값 변경을 처리하는 콜백 함수
+   * @param {string} type - 변경된 필터 타입
+   * @param {string} value - 변경된 필터 값
+   */
+  const handleFilterChange = useCallback((type, value) => {
+    setFilterType(type);
+    setFilterValue(value);
+  }, []);
 
-  const handleFilterValueChange = (event) => {
-    setFilterValue(event.target.value);
-  };
-
-  const getFilterCategories = () => {
+  /**
+   * 선택된 필터 타입에 기반하여 필터 카테고리를 가져오는 함수
+   * @returns {Array} - 선택된 필터 타입의 카테고리 목록
+   */
+  const getFilterCategories = useCallback(() => {
     const selectedCategory = surveyItems.find((item) => item.title === filterType);
     return selectedCategory ? selectedCategory.categories : [];
-  };
+  }, [surveyItems, filterType]);
 
-  const renderFilterMenuItem = (item) => (
-    <MenuItem key={item.title} value={item.title}>
-      {item.title}
-    </MenuItem>
-  );
-
-  const renderFilterValueMenuItem = (category) => (
-    <MenuItem key={category} value={category}>
-      {category}
-    </MenuItem>
-  );
-
+  // 선택된 필터 타입에 따라 기본 필터 값 설정
   const defaultFilterValue = filterType ? getFilterCategories()[0] : "";
 
   return (
     <Grid container className="App" direction="column">
+      {/* 헤더 */}
       <Grid item className="header" container justifyContent="flex-end" sx={{ mt: 2 }}>
-        <ReactToPrint
-          trigger={() => (
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              <PrinterOutlined />
-            </Button>
-          )}
-          content={() => ref.current}
-          documentTitle="리포트"
-        />
+        {/* 프린트 버튼 */}
+        <PrintButton printRef={printRef} />
       </Grid>
+
+      {/* 필터 */}
       <Grid item>
-        <TextField
-          id="filter-type-select"
-          select
-          label="Filter Type"
-          value={filterType}
-          onChange={handleFilterTypeChange}
-          fullWidth
-        >
-          <MenuItem value={ALL_OPTIONS}>{ALL_OPTIONS}</MenuItem>
-          {surveyItems.map(renderFilterMenuItem)}
-        </TextField>
-        {filterType && filterType !== ALL_OPTIONS && (
-          <TextField
-            id="filter-value-select"
-            select
-            label={`Filter Value (${filterType})`}
-            value={filterValue || defaultFilterValue}
-            onChange={handleFilterValueChange}
-            fullWidth
-          >
-            {getFilterCategories().map(renderFilterValueMenuItem)}
-          </TextField>
-        )}
-      </Grid>
-      <Grid item>
-        <Report
+        {/* 필터 섹션 */}
+        <FilterSection
           filterType={filterType}
           filterValue={filterValue || defaultFilterValue}
-          onFilterTypeChange={handleFilterTypeChange}
-          onFilterValueChange={handleFilterValueChange}
+          onFilterChange={handleFilterChange}
+          surveyItems={surveyItems}
+        />
+      </Grid>
+
+      {/* 리포트 */}
+      <Grid item>
+        {/* 필터 프롭스를 Report 컴포넌트에 전달 */}
+        <SurveyReport
+          filterType={filterType}
+          filterValue={filterValue || defaultFilterValue}
+          onFilterChange={handleFilterChange}
           surveyItems={surveyItems}
           surveys={generatedData}
-          ref={ref}
+          ref={printRef}
         />
       </Grid>
     </Grid>
@@ -94,54 +80,3 @@ const SurveyResults = () => {
 };
 
 export default SurveyResults;
-
-const surveyItems = [
-  {
-    title: '응답자 성별',
-    categories: ['남성', '여성', '기타'],
-    requiredResponses: true,
-  },
-  {
-    title: '응답자 나이대',
-    categories: ['10대', '20대', '30대', '40대', '50대 이상'],
-    requiredResponses: true,
-  },
-  {
-    title: '만족도 조사',
-    categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
-    requiredResponses: true,
-  },
-  {
-    title: '재구매 의사',
-    categories: ['매우만족', '만족', '보통', '불만족', '매우불만족'],
-    requiredResponses: false,
-  },
-  {
-    title: '음식 맛 평가',
-    categories: ['매우맛있음', '맛있음', '보통', '별로', '매우별로'],
-    requiredResponses: false,
-  },
-];
-
-const generateRandomSurveyData = () => {
-  const getRandomOption = (options) => options[Math.floor(Math.random() * options.length)];
-
-  const generateRandomSurvey = () => {
-    const surveyData = {};
-
-    surveyItems.forEach((item) => {
-      const randomOption = getRandomOption(item.categories);
-      surveyData[item.title] = item.requiredResponses ? randomOption : (Math.random() < 0.5 ? randomOption : null);
-    });
-
-    return surveyData;
-  };
-
-  const generatedSurveys = Array.from({ length: 120 }, generateRandomSurvey);
-  return generatedSurveys;
-};
-
-const generatedData = {
-  surveys: generateRandomSurveyData(),
-};
-
