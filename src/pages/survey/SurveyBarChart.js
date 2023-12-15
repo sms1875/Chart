@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { DefaultChartOptions } from './ChartOptions';
 
+/**
+ * 설문 막대 차트 컴포넌트
+ * @param {Object} props - 컴포넌트 속성
+ * @param {Object} props.data - 차트 데이터
+ * @param {string} props.labelFormat - 라벨 형식
+ * @returns {JSX.Element} - 렌더링된 막대 차트 컴포넌트
+ */
 const SurveyBarChart = ({ data, labelFormat }) => {
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(DefaultChartOptions);

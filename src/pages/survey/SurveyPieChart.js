@@ -2,6 +2,15 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { DefaultChartOptions } from './ChartOptions';
 
+/**
+ * 설문 파이 차트 컴포넌트
+ * @param {Object} props - 컴포넌트 속성
+ * @param {Object} props.data - 차트 데이터
+ * @param {string} props.type - 차트 타입
+ * @param {string} props.shape - 파이 차트 모양
+ * @param {string} props.labelFormat - 라벨 형식
+ * @returns {JSX.Element} - 렌더링된 파이 차트 컴포넌트
+ */
 const SurveyPieChart = ({ data, type, shape, labelFormat }) => {
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(DefaultChartOptions);

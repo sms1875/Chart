@@ -68,7 +68,7 @@ const generateRandomSurveyData = (surveyItems) => {
         return surveyData;
     };
 
-    const generatedSurveys = Array.from({ length: 120 }, generateRandomSurvey);
+    const generatedSurveys = Array.from({ length: 200 }, generateRandomSurvey);
     return generatedSurveys;
 };
 
