@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, MenuItem, TextField, Typography } from '@mui/material';
-import SurveyTable from './SurveyTable';
-import SurveyBarChart from './SurveyBarChart';
-import SurveyPieChart from './SurveyPieChart';
-import SurveyStackBarChart from './SurveyStackBarChart';
 import { pieChartShapes } from './ChartOptions';
 import MainCard from 'components/MainCard';
+import SurveyCharts from './SurveyCharts';
 
-const ChartGenerate = ({ data }) => {
+/**
+ * 차트를 렌더링하는 함수형 컴포넌트
+ * @param {Object} props - 컴포넌트 속성
+ * @param {Object} props.data - 차트 데이터
+ * @returns {JSX.Element} - 렌더링된 차트 컴포넌트
+ */
+const ChartRenderer = ({ data }) => {
   const [selectedType, setSelectedType] = useState('bar');
   const [selectedShape, setSelectedShape] = useState('full');
   const [selectedLabelFormat, setSelectedLabelFormat] = useState('none');
@@ -19,6 +22,7 @@ const ChartGenerate = ({ data }) => {
       const { title, data: chartData, requiredResponses } = data;
       const totalResponses = chartData.reduce((sum, value) => sum + value, 0);
 
+      // 차트 타이틀 및 필수 항목 표시
       setChartTitle(
         <Box>
           {title} ({totalResponses}명)
@@ -28,10 +32,12 @@ const ChartGenerate = ({ data }) => {
     }
   }, [data, selectedType, selectedShape, selectedLabelFormat]);
 
+  // 입력값 변경 핸들러
   const handleChange = (event, setter) => {
     setter(event.target.value);
   };
 
+  // 선택창 렌더링 함수
   const renderSelectField = (id, label, value, items, setter) => (
     <TextField
       id={id}
@@ -55,21 +61,21 @@ const ChartGenerate = ({ data }) => {
     </TextField>
   );
 
+  // 차트 렌더링 함수
   const renderChart = () => {
     const chartProps = { data, type: selectedType, shape: selectedShape, labelFormat: selectedLabelFormat };
-
     switch (selectedType) {
       case 'bar':
-        return <SurveyBarChart key={selectedLabelFormat} {...chartProps} />;
+        return <SurveyCharts.SurveyBarChart key={selectedLabelFormat} {...chartProps} />;
       case 'stack':
-        return <SurveyStackBarChart key={selectedLabelFormat} {...chartProps} />;
+        return <SurveyCharts.SurveyStackBarChart key={selectedLabelFormat} {...chartProps} />;
       case 'pie':
       case 'donut':
-        return <SurveyPieChart key={selectedLabelFormat} {...chartProps} />;
+        return <SurveyCharts.SurveyPieChart key={selectedLabelFormat} {...chartProps} />;
       case 'table':
-        return <SurveyTable data={data} />;
+        return <SurveyCharts.SurveyTable data={data} />;
       default:
-        return null;
+        return <SurveyCharts.SurveyTable data={data} />;
     }
   };
 
@@ -109,7 +115,7 @@ const ChartGenerate = ({ data }) => {
   );
 };
 
-ChartGenerate.propTypes = {
+ChartRenderer.propTypes = {
   data: PropTypes.shape({
     title: PropTypes.string,
     categories: PropTypes.arrayOf(PropTypes.string),
@@ -118,4 +124,4 @@ ChartGenerate.propTypes = {
   }).isRequired,
 };
 
-export default ChartGenerate;
+export default ChartRenderer;
