@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, MenuItem, TextField, Typography } from '@mui/material';
-import MainCard from 'components/MainCard';
 import SurveyCharts from './SurveyCharts';
 
 /**
@@ -15,6 +14,7 @@ const ChartRenderer = ({ data }) => {
   const [selectedShape, setSelectedShape] = useState('full');
   const [selectedLabelFormat, setSelectedLabelFormat] = useState('none');
   const [chartTitle, setChartTitle] = useState('');
+  const [isFilterOptionsVisible, setIsFilterOptionsVisible] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -25,7 +25,7 @@ const ChartRenderer = ({ data }) => {
       setChartTitle(
         <Box>
           {title} ({totalResponses}명)
-          {requiredResponses ? <Typography variant="body2" color="error">*필수 항목</Typography> : <Box sx={{ mt: 4 }} />}
+          {requiredResponses ? <Typography variant="body2" color="error">*필수 항목</Typography> : <Box sx={{ mt: 2.5 }} />}
         </Box>
       );
     }
@@ -36,28 +36,43 @@ const ChartRenderer = ({ data }) => {
     setter(event.target.value);
   };
 
+  const handleMouseEnter = () => {
+    setIsFilterOptionsVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsFilterOptionsVisible(false);
+  };
+
   // 선택창 렌더링 함수
   const renderSelectField = (id, label, value, items, setter) => (
-    <TextField
-      id={id}
-      size="small"
-      select
-      label={label}
-      value={value}
-      onChange={(event) => handleChange(event, setter)}
-      sx={{
-        '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
-        marginLeft: 'auto',
-        mt: 2,
-        "@media print": { display: 'none' }
-      }}
-    >
-      {items.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </TextField>
+    isFilterOptionsVisible && (  // Conditionally render based on visibility
+      <TextField
+        id={id}
+        size="small"
+        select
+        label={label}
+        value={value}
+        onChange={(event) => handleChange(event, setter)}
+        sx={{
+          '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
+          marginLeft: 'auto',
+          mt: 2,
+          visibility: isFilterOptionsVisible ? 'visible' : 'hidden',
+          opacity: isFilterOptionsVisible ? 1 : 0,
+          transition: 'visibility 0s, opacity 0.5s linear',
+          "@media print": {  
+            display: "none"  // Hide when printing
+           },
+        }}
+      >
+        {items.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+    )
   );
 
   // 차트 렌더링 함수
@@ -79,7 +94,14 @@ const ChartRenderer = ({ data }) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundColor: 'yellow', // 제거예정
+        magrin : '0 auto',
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {renderSelectField('chart-type-select', 'Chart Type', selectedType, [
         { value: 'bar', label: 'Bar Chart' },
         { value: 'stack', label: 'Stack' },
@@ -109,9 +131,7 @@ const ChartRenderer = ({ data }) => {
             {chartTitle}
           </Typography>
         )}
-        <MainCard sx={{ mt: 2 }} content={false}>
           {renderChart()}
-        </MainCard>
       </Box>
     </Box>
   );

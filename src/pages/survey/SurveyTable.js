@@ -101,6 +101,7 @@ const SurveyTable = ({ data }) => {
         position: 'relative',
         display: 'block',
         maxWidth: '100%',
+        backgroundColor: 'pink', // 제거예정
       }}
     >
       <Table

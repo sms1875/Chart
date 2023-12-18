@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo } from "react";
-import { Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import ChartRenderer from "./ChartRenderer";
 
 /**
@@ -67,30 +67,29 @@ const SurveyReport = forwardRef(
     );
 
     return (
-      <Grid
-        container
+      <Box
         className="SurveyReport print-styles"
-        rowSpacing={3}
-        columnSpacing={3}
         sx={{
-          height: '29.7cm', 
-          width: '21cm', 
+          height: '29.7cm',
+          width: '21cm',
+          backgroundColor: 'green', // 제거예정
           margin: '0 auto',
-          "@media print": { margin: "10mm" },
-          backgroundColor: 'yellow',
+          padding: '1cm',
         }}
         ref={ref}
       >
-        {/* 생성된 데이터를 이용하여 차트를 렌더링 */}
         {aggregatedData.map((data, index) => (
-          <Grid
+          <Box 
             item
             key={data.title || index}
+            sx={{
+              "@media print": { pageBreakInside: 'avoid' },
+            }}
           >
             <ChartRenderer data={data} />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     );
   }
 );

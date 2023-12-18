@@ -52,6 +52,31 @@ export const surveyItem2 = [
         categories: ['Visual Studio Code', 'Sublime Text', 'Atom', 'Eclipse', 'IntelliJ IDEA'],
         requiredResponses: false,
     },
+    {
+        title: 'Item 6',
+        categories: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5', 'Category 6'],
+        requiredResponses: true,
+      },
+      {
+        title: 'Item 7',
+        categories: ['Category A', 'Category B', 'Category C'],
+        requiredResponses: false,
+      },
+      {
+        title: 'Item 8',
+        categories: ['Category X', 'Category Y', 'Category Z', 'Category W'],
+        requiredResponses: true,
+      },
+      {
+        title: 'Item 9',
+        categories: ['Category One', 'Category Two', 'Category Three'],
+        requiredResponses: false,
+      },
+      {
+        title: 'Item 10',
+        categories: ['Category Alpha', 'Category Beta', 'Category Gamma'],
+        requiredResponses: true,
+      },
 ];
 
 const generateRandomSurveyData = (surveyItems) => {
