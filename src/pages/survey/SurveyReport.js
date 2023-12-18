@@ -76,7 +76,8 @@ const SurveyReport = forwardRef(
           height: '29.7cm', 
           width: '21cm', 
           margin: '0 auto',
-          "@media print": { margin: "10mm" }
+          "@media print": { margin: "10mm" },
+          backgroundColor: 'yellow',
         }}
         ref={ref}
       >
@@ -85,9 +86,8 @@ const SurveyReport = forwardRef(
           <Grid
             item
             key={data.title || index}
-            sx={{ "@media print": { pageBreakBefore: 'always' } }}
           >
-            <ChartRenderer data={data} requiredResponses={data.requiredResponses} />
+            <ChartRenderer data={data} />
           </Grid>
         ))}
       </Grid>

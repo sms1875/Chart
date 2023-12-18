@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, MenuItem, TextField, Typography } from '@mui/material';
-import { pieChartShapes } from './ChartOptions';
 import MainCard from 'components/MainCard';
 import SurveyCharts from './SurveyCharts';
 
@@ -97,10 +96,13 @@ const ChartRenderer = ({ data }) => {
 
       {(selectedType === 'pie' || selectedType === 'donut') && (
         <>
-          {renderSelectField('chart-mode-select', 'Chart Shape', selectedShape, pieChartShapes, setSelectedShape)}
+          {renderSelectField('chart-mode-select', 'Chart Shape', selectedShape, [
+            { value: 'full', label: 'Full' },
+            { value: 'half', label: 'Half' },
+          ], setSelectedShape)}
         </>
       )}
-
+      
       <Box sx={{ mt: 2 }}>
         {chartTitle && (
           <Typography variant="h5">

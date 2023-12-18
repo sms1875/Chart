@@ -35,11 +35,3 @@ export const DefaultChartOptions = {
       enabled: false,
     },
   };
-  
-  /**
-   * 파이 차트 모양 옵션
-   */
-  export const pieChartShapes = [
-    { value: 'full', label: '전체' },
-    { value: 'half', label: '반쪽' },
-  ];

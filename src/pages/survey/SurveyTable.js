@@ -200,7 +200,6 @@ SurveyTable.propTypes = {
   data: PropTypes.shape({
     categories: PropTypes.arrayOf(PropTypes.string).isRequired,
     data: PropTypes.arrayOf(PropTypes.number).isRequired,
-    requiredResponses: PropTypes.bool,
   }),
 };
 

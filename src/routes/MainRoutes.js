@@ -59,10 +59,6 @@ const MainRoutes = {
           element: <SurveyResults surveyItems={survey.items} generatedData={survey.generatedData} />,
         })),
       ]
-      // TODO 
-      // survey/ 주소로 SurveyList 표시
-      // survey/1 주소로 SurveyResults 표시
-      // 현재상태 : survey/1로 접속시 SurveyList가 표시
     },
     {
       path: 'shadow',

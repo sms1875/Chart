@@ -6,11 +6,10 @@ import { DefaultChartOptions } from './ChartOptions';
  * 설문 결과를 표시하는 스택형 막대 차트 컴포넌트
  * @param {Object} props - 컴포넌트 속성
  * @param {Object} props.data - 차트 데이터
- * @param {boolean} props.requiredResponses - 필수 응답 여부
  * @param {string} props.labelFormat - 데이터 라벨 포맷
  * @returns {JSX.Element} - 렌더링된 스택형 막대 차트 컴포넌트
  */
-const SurveyStackBarChart = ({ data, requiredResponses, labelFormat }) => {
+const SurveyStackBarChart = ({ data, labelFormat }) => {
   const [series, setSeries] = useState([]);
   const [options, setOptions] = useState(DefaultChartOptions);
 
@@ -82,7 +81,7 @@ const SurveyStackBarChart = ({ data, requiredResponses, labelFormat }) => {
         },
       }));
     }
-  }, [data, requiredResponses]);
+  }, [data]);
 
   return (
     <ReactApexChart options={options} series={series} type='bar' />
