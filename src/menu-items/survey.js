@@ -19,7 +19,7 @@ const survey = {
       id: 'Results',
       title: 'Results',
       type: 'item',
-      url: '/survey/list',
+      url: '/survey/result',
       icon: icons.PrinterOutlined
     },
   ]

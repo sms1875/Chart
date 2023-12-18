@@ -51,7 +51,7 @@ const MainRoutes = {
       path: 'survey',
       children: [
         {
-          path: 'list',
+          path: 'result',
           element: <SurveyList surveyList={surveyList} />,
         },
         ...surveyList.map((survey) => ({
