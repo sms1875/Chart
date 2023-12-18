@@ -51,6 +51,8 @@ for (let year = 13; year <= 23; year++) {
 
 const SurveyBarChart = () => {
   const [selectedAxes, setSelectedAxes] = useState(['y']); // Initial selection
+  const [xMin, setXMin] = useState(labels.indexOf('17.2'));
+  const [xMax, setXMax] = useState(labels.indexOf('17.6'));
 
   const filteredDataSets = [
     ...(selectedAxes.includes('y') ? [{ type: 'line', label: 'Data 1', borderColor: 'red', data: generateRandomData(), yAxisID: 'y' }] : []),
@@ -118,8 +120,8 @@ const SurveyBarChart = () => {
           box1: {
             drawTime: 'beforeDraw',
             type: 'box',
-            xMin: labels.indexOf('17.2'),
-            xMax: labels.indexOf('17.6'),
+            xMin: xMin,
+            xMax: xMax,
             backgroundColor: 'rgba(234, 234, 234, 0.9)',
           },
         },
@@ -153,6 +155,15 @@ const SurveyBarChart = () => {
           <input type="checkbox" checked={selectedAxes.includes('y2')} onChange={() => handleAxisToggle('y2')} />
           y2
         </label>
+        <div>
+  <label htmlFor="xMinInput">X Min:</label>
+  <input type="number" id="xMinInput" value={xMin} onChange={(e) => setXMin(e.target.value)} />
+</div>
+<div>
+  <label htmlFor="xMaxInput">X Max:</label>
+  <input type="number" id="xMaxInput" value={xMax} onChange={(e) => setXMax(e.target.value)} />
+</div>
+
       </div>
     </div>
   );
