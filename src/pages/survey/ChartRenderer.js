@@ -37,7 +37,7 @@ const ChartRenderer = ({ data }) => {
   };
 
   const handleMouseEnter = () => {
-    setIsFilterOptionsVisible(true);
+    //setIsFilterOptionsVisible(true);
   };
 
   const handleMouseLeave = () => {
