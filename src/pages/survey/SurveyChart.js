@@ -67,6 +67,10 @@ const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabl
   },
   plugins: {
     zoom: {
+      pan: {
+        enabled: true,
+        mode: 'xy',
+      },
       zoom: {
         wheel: {
           enabled: true,
@@ -146,19 +150,16 @@ const SurveyChart = ({ ChartItem }) => {
             {axis}
           </label>
         ))}
-        {/* X 최소, 최대값 입력 */}
-        <div>
-          <label htmlFor="xMinInput">X Min:</label>
-          <input type="number" id="xMinInput" value={xMin} onChange={(e) => setXMin(e.target.value)} />
-          <label htmlFor="xMaxInput">X Max:</label>
-          <input type="number" id="xMaxInput" value={xMax} onChange={(e) => setXMax(e.target.value)} />
-        </div>
         {/* 주석 활성화 체크박스 */}
         <div>
           <label>
             <input type="checkbox" checked={isAnnotationEnabled} onChange={handleAnnotationToggle} />
             주석 활성화
           </label>
+          <label htmlFor="xMinInput">X Min:</label>
+          <input type="number" id="xMinInput" value={xMin} onChange={(e) => setXMin(e.target.value)} />
+          <label htmlFor="xMaxInput">X Max:</label>
+          <input type="number" id="xMaxInput" value={xMax} onChange={(e) => setXMax(e.target.value)} />
         </div>
       </div>
     </div>
