@@ -56,7 +56,7 @@ const MainRoutes = {
         },
         ...surveyList.map((survey) => ({
           path: `result/${survey.id}`,
-          element: <SurveyResults surveyItems={survey.items} generatedData={survey.generatedData} />,
+          element: <SurveyResults ChartItem={survey} />,
         })),
       ]
     },
