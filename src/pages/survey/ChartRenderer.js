@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, MenuItem, TextField, Typography } from '@mui/material';
-import SurveyCharts from './SurveyCharts';
+import SurveyChart from './SurveyChart';
 
 /**
  * 차트를 렌더링하는 함수형 컴포넌트
@@ -61,9 +61,9 @@ const ChartRenderer = ({ data }) => {
           visibility: isFilterOptionsVisible ? 'visible' : 'hidden',
           opacity: isFilterOptionsVisible ? 1 : 0,
           transition: 'visibility 0s, opacity 0.5s linear',
-          "@media print": {  
+          "@media print": {
             display: "none"  // Hide when printing
-           },
+          },
         }}
       >
         {items.map((option) => (
@@ -77,27 +77,15 @@ const ChartRenderer = ({ data }) => {
 
   // 차트 렌더링 함수
   const renderChart = () => {
-    const chartProps = { data, type: selectedType, shape: selectedShape, labelFormat: selectedLabelFormat };
-    switch (selectedType) {
-      case 'bar':
-        return <SurveyCharts.SurveyBarChart key={selectedLabelFormat} {...chartProps} />;
-      case 'stack':
-        return <SurveyCharts.SurveyStackBarChart key={selectedLabelFormat} {...chartProps} />;
-      case 'pie':
-      case 'donut':
-        return <SurveyCharts.SurveyPieChart key={selectedLabelFormat} {...chartProps} />;
-      case 'table':
-        return <SurveyCharts.SurveyTable data={data} />;
-      default:
-        return <SurveyCharts.SurveyTable data={data} />;
-    }
+    return <SurveyChart />;
+
   };
 
   return (
     <Box
       sx={{
-        backgroundColor: 'yellow', // 제거예정
-        magrin : '0 auto',
+        backgroundColor: 'white', // 제거예정
+        magrin: '0 auto',
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -124,14 +112,14 @@ const ChartRenderer = ({ data }) => {
           ], setSelectedShape)}
         </>
       )}
-      
+
       <Box sx={{ mt: 2 }}>
         {chartTitle && (
           <Typography variant="h5">
             {chartTitle}
           </Typography>
         )}
-          {renderChart()}
+        {renderChart()}
       </Box>
     </Box>
   );
