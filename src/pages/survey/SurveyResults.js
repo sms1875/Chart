@@ -11,7 +11,7 @@ import { Grid } from "@mui/material";
  * @param {Object} props.generatedData - 생성된 설문 데이터
  * @returns {JSX.Element} - 렌더링된 설문 결과 컴포넌트
  */
-const SurveyResults = ( {ChartItem} ) => {
+const SurveyResults = ({ ChartItem }) => {
   // 프린트를 위한 레퍼런스
   const printRef = useRef();
 

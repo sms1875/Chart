@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Chart as ChartJS, LinearScale, CategoryScale, BarElement, PointElement, LineElement, Legend, Tooltip, LineController, BarController, Filler } from 'chart.js';
-import { Chart } from 'react-chartjs-2';
+import { Chart as ReactChart } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import PropTypes from 'prop-types';
 
 // ChartJS 등록
 ChartJS.register(
@@ -126,7 +127,8 @@ const generateRandomColors = (count) => {
   return Array.from({ length: count }, () => '#' + Math.floor(Math.random() * 16777215).toString(16));
 };
 
-const colors = generateRandomColors(100); // 색상 배열
+// 색상 배열 생성
+const colors = generateRandomColors(10);
 
 /**
  * 설문 결과를 표시하는 차트 컴포넌트
@@ -137,11 +139,14 @@ const colors = generateRandomColors(100); // 색상 배열
 const SurveyChart = ({ ChartItem }) => {
   // State 정의
   const [selectedAxes, setSelectedAxes] = useState([ChartItem.axis[0]]); // 선택된 Y 축
-  const [xMin, setXMin] = useState(ChartItem.date[0]); // X 최소값
-  const [xMax, setXMax] = useState(ChartItem.date[1]); // X 최대값
+  const [annotationXValue, setAnnotationXValue] = useState({
+    min: ChartItem.date[0], // X 최소값
+    max: ChartItem.date[1], // X 최대값
+  });
   const [isAnnotationEnabled, setIsAnnotationEnabled] = useState(false); // 주석 활성화 여부
 
   const maxSelectedAxes = 3; // 선택 가능한 최대 Y 축 수
+
   /**
    * Y 축 선택 핸들러
    * @param {string} axis - 선택된 Y 축
@@ -165,18 +170,20 @@ const SurveyChart = ({ ChartItem }) => {
   };
 
   // 차트 옵션 설정
-  const axisConfig = ChartItem.axis.reduce((axesConfig, axis) => {
-    axesConfig[axis] = getYAxisOptions('linear', selectedAxes.includes(axis), selectedAxes.length > 0 && selectedAxes[0] === axis ? 'left' : 'right', `${axis} 축`);
-    return axesConfig;
-  }, {});
+  const axisConfig = useMemo(() => {
+    return ChartItem.axis.reduce((axesConfig, axis) => {
+      axesConfig[axis] = getYAxisOptions('linear', selectedAxes.includes(axis), selectedAxes.length > 0 && selectedAxes[0] === axis ? 'left' : 'right', `${axis} 축`);
+      return axesConfig;
+    }, {});
+  }, [ChartItem.axis, selectedAxes]);
 
-  const filteredDataSets = generateChartDataSets(selectedAxes, ChartItem.data, colors);
+  const filteredDataSets = useMemo(() => generateChartDataSets(selectedAxes, ChartItem.data, colors), [selectedAxes, ChartItem.data, colors]);
 
-  const chartOptions = getChartOptions(selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled);
+  const chartOptions = useMemo(() => getChartOptions(selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled), [selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled]);
 
   return (
     <div>
-      <Chart type='line' data={{ labels: ChartItem.date, datasets: filteredDataSets }} options={chartOptions} />
+      <ReactChart type='line' data={{ labels: ChartItem.date, datasets: filteredDataSets }} options={chartOptions} />
       <div>
         {/* Y 축 선택 체크박스 */}
         {ChartItem.axis.map((axis) => (
@@ -191,14 +198,41 @@ const SurveyChart = ({ ChartItem }) => {
             <input type="checkbox" checked={isAnnotationEnabled} onChange={handleAnnotationToggle} />
             주석 활성화
           </label>
-          <label htmlFor="xMinInput">X 최소값:</label>
-          <input type="number" id="xMinInput" value={xMin} onChange={(e) => setXMin(e.target.value)} />
-          <label htmlFor="xMaxInput">X 최대값:</label>
-          <input type="number" id="xMaxInput" value={xMax} onChange={(e) => setXMax(e.target.value)} />
+          <label htmlFor="annotationXMinInput">X 최소값:</label>
+          <input
+            type="number"
+            id="annotationXMinInput"
+            value={annotationXValue.min}
+            onChange={(e) => setAnnotationXValue({ ...annotationXValue, min: e.target.value })}
+          />
+          <label htmlFor="annotationXMaxInput">X 최대값:</label>
+          <input
+            type="number"
+            id="annotationXMaxInput"
+            value={annotationXValue.max}
+            onChange={(e) => setAnnotationXValue({ ...annotationXValue, max: e.target.value })}
+          />
         </div>
       </div>
     </div>
   );
+};
+
+SurveyChart.propTypes = {
+  ChartItem: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    date: PropTypes.arrayOf(PropTypes.string).isRequired,
+    axis: PropTypes.arrayOf(PropTypes.string).isRequired,
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        axis: PropTypes.string.isRequired,
+        data: PropTypes.arrayOf(
+          PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        ).isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default SurveyChart;
