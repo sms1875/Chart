@@ -33,6 +33,12 @@ const generateChartData = (axisType) => {
                 case 'axis3':
                     value = faker.number.float({ min: 1, max: 10 }).toFixed(2);
                     break;
+                case 'axis4':
+                    value = faker.number.int({ min: -100, max: 100 }).toFixed(2);
+                    break;
+                case 'axis5':
+                    value = faker.number.int({ min: 0, max: 100000 }).toFixed(2);
+                    break;
                 default:
                     value = 0;
             }
@@ -47,7 +53,7 @@ export const ChartItem = [
     {
         name: 'Chart 1',
         date: generateDate(),
-        axis: ['axis1', 'axis2', 'axis3'],
+        axis: ['axis1', 'axis2', 'axis3', 'axis4', 'axis5'],
         data: [
             {
                 label: 'data1',
@@ -79,6 +85,16 @@ export const ChartItem = [
                 axis: 'axis3',
                 data: generateChartData('axis3'),
             },
+            {
+                label: 'data7',
+                axis: 'axis4',
+                data: generateChartData('axis4'),
+            },
+            {
+                label: 'data8',
+                axis: 'axis5',
+                data: generateChartData('axis5'),
+            }
         ]
     },
 ];

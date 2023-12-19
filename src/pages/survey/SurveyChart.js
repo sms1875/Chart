@@ -39,14 +39,14 @@ const getYAxisOptions = (axisType, display, position, axisLabel) => ({
 });
 
 // 차트 데이터 생성
-const generateChartDataSets = (selectedAxes, chartData) => {
-  return chartData.map((data) => {
+const generateChartDataSets = (selectedAxes, chartData, colors) => {
+  return chartData.map((data, index) => {
     const isDataSelected = selectedAxes.includes(data.axis);
     return isDataSelected ? {
       type: data.type,
       label: data.label,
-      borderColor: data.borderColor,
-      backgroundColor: data.backgroundColor,
+      borderColor: colors[index],
+      backgroundColor: colors[index],
       data: data.data,
       yAxisID: data.axis,
     } : null;
@@ -60,6 +60,10 @@ const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabl
       stacked: true,
     },
     ...axisConfig,
+  },
+  interaction: {
+    mode: 'index',
+    intersect: false,
   },
   plugins: {
     zoom: {
@@ -88,6 +92,12 @@ const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabl
   },
 });
 
+// 색상 배열 생성
+const generateRandomColors = (count) => {
+  return Array.from({ length: count }, () => '#' + Math.floor(Math.random() * 16777215).toString(16));
+};
+
+const colors = generateRandomColors(100);
 // 주석 및 재사용 가능한 요소들을 포함한 차트 컴포넌트
 const SurveyChart = ({ ChartItem }) => {
   // State 정의
@@ -96,7 +106,7 @@ const SurveyChart = ({ ChartItem }) => {
   const [xMax, setXMax] = useState(ChartItem.date[1]); // X 최대값
   const [isAnnotationEnabled, setIsAnnotationEnabled] = useState(false); // 주석 활성화 여부
 
-  const maxSelectedAxes = 2; // 선택 가능한 최대 Y 축 수
+  const maxSelectedAxes = 3; // 선택 가능한 최대 Y 축 수
 
   // Y 축 선택 핸들러
   const handleAxisToggle = (axis) => {
@@ -117,11 +127,11 @@ const SurveyChart = ({ ChartItem }) => {
 
   // 차트 옵션 설정
   const axisConfig = ChartItem.axis.reduce((axesConfig, axis) => {
-    axesConfig[axis] = getYAxisOptions('linear', selectedAxes.includes(axis), selectedAxes.length > 1 && selectedAxes[1] === axis ? 'right' : 'left', `${axis} Axis Label`);
+    axesConfig[axis] = getYAxisOptions('linear', selectedAxes.includes(axis), selectedAxes.length > 0 && selectedAxes[0] === axis ? 'left' : 'right', `${axis} Axis Label`);
     return axesConfig;
   }, {});
 
-  const filteredDataSets = generateChartDataSets(selectedAxes, ChartItem.data);
+  const filteredDataSets = generateChartDataSets(selectedAxes, ChartItem.data, colors);
 
   const chartOptions = getChartOptions(selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled);
 

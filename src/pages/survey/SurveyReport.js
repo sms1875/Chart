@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import { Box } from "@mui/material";
-import ChartRenderer from "./ChartRenderer";
+import SurveyChart from "./SurveyChart";
 
 const SurveyReport = forwardRef(({ ChartItem }, ref) => {
   return (
@@ -23,8 +23,12 @@ const SurveyReport = forwardRef(({ ChartItem }, ref) => {
           sx={{
             "@media print": { pageBreakInside: 'avoid' },
           }}
-        >
-          <ChartRenderer ChartItem={item} />
+        ><Box
+          sx={{
+            backgroundColor: 'white', // 제거 예정
+          }}>
+            <SurveyChart ChartItem={item} />
+          </Box>
         </Box>
       ))}
     </Box>
