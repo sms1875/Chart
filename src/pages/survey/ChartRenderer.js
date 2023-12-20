@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SurveyChart from './SurveyChart';
+import ChartTable from './ChartTable';
 
 const maxSelectedAxes = 3; // 선택 가능한 최대 Y 축 수
 /**
@@ -81,7 +82,11 @@ const ChartRenderer = ({ ChartItem }) => {
           isAnnotationEnabled={isAnnotationEnabled}
         />
       </div>
-      
+
+      <div>
+      <ChartTable chartData={ChartItem} selectedAxes={selectedAxes} />
+    </div>
+
     </div>
   );
 };
