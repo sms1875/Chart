@@ -21,13 +21,14 @@ ChartJS.register(
 );
 
 export const DEFAULT_COLOR_COUNT = 10;
+
 /**
- * Y 축의 옵션을 설정하는 함수
+ * Y 축 옵션을 설정하는 함수
  * @param {string} axisType - 축의 유형
  * @param {boolean} display - 표시 여부
  * @param {string} position - 위치
  * @param {string} axisLabel - 축 레이블
- * @returns {Object} - Y 축의 옵션
+ * @returns {Object} - Y 축 옵션
  */
 export const getYAxisOptions = (axisType, display, position, axisLabel) => ({
     type: axisType,
@@ -53,19 +54,18 @@ export const getYAxisOptions = (axisType, display, position, axisLabel) => ({
  * @param {Array} colors - 색상 배열
  * @returns {Array} - 생성된 차트 데이터셋 배열
  */
-export const generateChartDataSets = (selectedAxes, chartData, colors) => {
-    return chartData.map((data, index) => {
-        const isDataSelected = selectedAxes.includes(data.axis);
-        return isDataSelected ? {
+export const generateChartDataSets = (selectedAxes, chartData, colors) => (
+    chartData
+        .filter(data => selectedAxes.includes(data.axis))
+        .map((data, index) => ({
             type: data.type,
             label: data.label,
             borderColor: colors[index],
             backgroundColor: colors[index],
             data: data.data,
             yAxisID: data.axis,
-        } : null;
-    }).filter(Boolean);
-};
+        }))
+);
 
 /**
  * 차트 옵션을 생성하는 함수
@@ -74,9 +74,10 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => {
  * @param {number} xMin - X 최소값
  * @param {number} xMax - X 최대값
  * @param {boolean} isAnnotationEnabled - 주석 활성화 여부
+ * @param {object} isDragDataRef - ref object for isDragData
  * @returns {Object} - 차트 옵션
  */
-export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled, eventOutsideDataPoint) => ({
+export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled, isDragDataRef) => ({
     scales: {
         x: {
             stacked: true,
@@ -90,34 +91,31 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
     plugins: {
         dragData: {
             enabled: true,
-            onDragStart: function () {
-                eventOutsideDataPoint = false;
+            round: 2, // 반올림 자릿수
+            onDragStart: () => {
+                isDragDataRef.current = true;
             },
-            onDragEnd: function () {
-                eventOutsideDataPoint = true;
+            onDragEnd: () => {
+                isDragDataRef.current = false;
+                // TODO: update data
             },
         },
         tooltip: {
             callbacks: {
-                afterLabel: function (context) {
+                afterLabel: (context) => {
                     let afterLabel = context.dataset.afterLabel || '';
 
                     if (context.parsed.y !== null) {
-                        afterLabel += '(' + context.dataset.yAxisID + ')';
+                        afterLabel += `(${context.dataset.yAxisID})`;
                     }
                     return afterLabel;
-                }
-            }
+                },
+            },
         },
         zoom: {
             pan: {
                 enabled: true,
-                mode: function () {
-                    if (eventOutsideDataPoint) {
-                        return 'xy';
-                    }
-                    return ''
-                }
+                mode: () => (isDragDataRef.current ? null : 'xy'),
                 //modifierKey: 'ctrl',
             },
             zoom: {
@@ -150,8 +148,8 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
  * @param {number} count - 색상 개수
  * @returns {Array} - 생성된 색상 배열
  */
-const generateRandomColors = (count) => {
-    return Array.from({ length: count }, () => '#' + Math.floor(Math.random() * 16777215).toString(16));
-};
+export const generateRandomColors = (count) => (
+    Array.from({ length: count }, () => `#${Math.floor(Math.random() * 16777215).toString(16)}`)
+);
 
 export const colors = generateRandomColors(DEFAULT_COLOR_COUNT);
