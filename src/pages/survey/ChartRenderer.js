@@ -93,8 +93,9 @@ const ChartRenderer = ({ ChartItem }) => {
           onDataUpdate={handleDataUpdate}
         />
       </div>
-
-      <div>
+  
+        {/* 테이블 */}
+      <div style={{ overflowX: 'auto' }}> {/* 스크롤을 추가하는 부분 */}
         <ChartTable
           key={key} // key 값을 ChartTable 컴포넌트에 전달
           chartData={ChartItem}

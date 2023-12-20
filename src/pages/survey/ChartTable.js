@@ -22,7 +22,7 @@ const ChartTable = ({ chartData, selectedAxes }) => {
     });
 
     return (
-        <div style={{ overflowX: 'auto' }}> {/* 스크롤을 추가하는 부분 */}
+        <div>
             <table border="1">
                 <thead>
                     <tr>
