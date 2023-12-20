@@ -18,6 +18,7 @@ ChartJS.register(
     annotationPlugin
 );
 
+export const DEFAULT_COLOR_COUNT = 10;
 /**
  * Y 축의 옵션을 설정하는 함수
  * @param {string} axisType - 축의 유형
@@ -85,6 +86,19 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
         intersect: false,
     },
     plugins: {
+        tooltip: {
+            callbacks: {
+                afterLabel: function (context) {
+                    let afterLabel = context.dataset.afterLabel || '';
+                    console.log(context);context
+
+                    if (context.parsed.y !== null) {
+                        afterLabel += '(' + context.dataset.yAxisID + ')';
+                    }
+                    return afterLabel;
+                }
+            }
+        },
         zoom: {
             pan: {
                 enabled: true,
@@ -124,4 +138,4 @@ const generateRandomColors = (count) => {
     return Array.from({ length: count }, () => '#' + Math.floor(Math.random() * 16777215).toString(16));
 };
 
-export const colors = generateRandomColors(10);
+export const colors = generateRandomColors(DEFAULT_COLOR_COUNT);
