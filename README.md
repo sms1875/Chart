@@ -1,24 +1,3 @@
-## 구조
-
-# Project Structure
-
-|-- SurveyList
-| |
-| |-- SurveyResults
-| | |
-| | |-- FilterSection
-| | |-- PrintButton
-| | |-- SurveyReport
-| | | |
-| | | |-- ChartRenderer
-| | | | |
-| | | | |-- SurveyCharts
-| | | | | |
-| | | | | |-- BarChart
-| | | | | |-- StackBarChart
-| | | | | |-- CircleChart  
-| | | | | |-- Table
-
 ## Documentation
 
 [Mantis documentation](https://codedthemes.gitbook.io/mantis/) helps you out in all aspects from Installation to deployment.
@@ -38,4 +17,15 @@
 ## 오픈소스
 mantis-free-react-admin-template
 - https://github.com/codedthemes/mantis-free-react-admin-template
-- MIT License
+
+Chart.js
+- https://www.chartjs.org/
+
+chartjs-plugin-annotation
+- https://www.chartjs.org/chartjs-plugin-annotation/latest/
+
+chartjs-plugin-dragdata
+- https://www.npmjs.com/package/chartjs-plugin-dragdata
+
+chartjs-plugin-zoom
+- https://www.chartjs.org/chartjs-plugin-zoom/latest/
