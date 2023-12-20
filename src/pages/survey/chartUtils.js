@@ -76,7 +76,7 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => {
  * @param {boolean} isAnnotationEnabled - 주석 활성화 여부
  * @returns {Object} - 차트 옵션
  */
-export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled) => ({
+export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled, eventOutsideDataPoint) => ({
     scales: {
         x: {
             stacked: true,
@@ -88,7 +88,15 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
         intersect: false,
     },
     plugins: {
-        dragData: true,
+        dragData: {
+            enabled: true,
+            onDragStart: function () {
+                eventOutsideDataPoint = false;
+            },
+            onDragEnd: function () {
+                eventOutsideDataPoint = true;
+            },
+        },
         tooltip: {
             callbacks: {
                 afterLabel: function (context) {
@@ -105,9 +113,12 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
             pan: {
                 enabled: true,
                 mode: function () {
-                    return 'xy';
-                },
-                modifierKey: 'ctrl',
+                    if (eventOutsideDataPoint) {
+                        return 'xy';
+                    }
+                    return ''
+                }
+                //modifierKey: 'ctrl',
             },
             zoom: {
                 wheel: {

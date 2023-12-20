@@ -32,7 +32,8 @@ const SurveyChart = ({
 
   const filteredDataSets = useMemo(() => generateChartDataSets(selectedAxes, ChartItem.data, colors), [selectedAxes, ChartItem.data]);
 
-  const chartOptions = useMemo(() => getChartOptions(selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled), [selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled]);
+  const eventOutsideDataPoint = true;
+  const chartOptions = useMemo(() => getChartOptions(selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled, eventOutsideDataPoint), [selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled, eventOutsideDataPoint]);
 
   return (
     <div>
