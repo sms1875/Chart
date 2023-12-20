@@ -1,6 +1,7 @@
 import { Chart as ChartJS, LinearScale, CategoryScale, BarElement, PointElement, LineElement, Legend, Tooltip, LineController, BarController, Filler } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import dragDataPlugin from 'chartjs-plugin-dragdata';
 
 // ChartJS 등록
 ChartJS.register(
@@ -15,7 +16,8 @@ ChartJS.register(
     BarController,
     Filler,
     zoomPlugin,
-    annotationPlugin
+    annotationPlugin,
+    dragDataPlugin
 );
 
 export const DEFAULT_COLOR_COUNT = 10;
@@ -86,6 +88,7 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
         intersect: false,
     },
     plugins: {
+        dragData: true,
         tooltip: {
             callbacks: {
                 afterLabel: function (context) {
@@ -101,7 +104,10 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
         zoom: {
             pan: {
                 enabled: true,
-                mode: 'xy',
+                mode: function () {
+                    return 'xy';
+                },
+                modifierKey: 'ctrl',
             },
             zoom: {
                 wheel: {
