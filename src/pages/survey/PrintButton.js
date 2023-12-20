@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@mui/material";
 import { PrinterOutlined } from '@ant-design/icons';
 import ReactToPrint from 'react-to-print';
 
@@ -12,12 +11,23 @@ import ReactToPrint from 'react-to-print';
 const PrintButton = ({ printRef }) => (
   <ReactToPrint
     trigger={() => (
-      <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-        <PrinterOutlined />
-      </Button>
+      <button
+        style={{
+          backgroundColor: '#1976D2',
+          color: '#fff',
+          padding: '10px 15px',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          outline: 'none',
+        }}
+      >
+        <PrinterOutlined style={{ marginRight: '8px' }} />
+        Print
+      </button>
     )}
     content={() => printRef.current}
-    documentTitle="리포트"
+    documentTitle="Report"
   />
 );
 

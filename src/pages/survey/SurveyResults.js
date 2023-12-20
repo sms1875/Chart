@@ -1,8 +1,6 @@
 import React, { useRef } from "react";
 import SurveyReport from "./SurveyReport";
 import PrintButton from "./PrintButton";
-import { Grid } from "@mui/material";
-
 
 /**
  * 설문 결과를 표시하는 컴포넌트
@@ -15,28 +13,20 @@ const SurveyResults = ({ ChartItem }) => {
   // 프린트를 위한 레퍼런스
   const printRef = useRef();
 
-  /**
-   * 선택된 필터 타입에 기반하여 필터 카테고리를 가져오는 함수
-   * @returns {Array} - 선택된 필터 타입의 카테고리 목록
-   */
-
   return (
-    <Grid container className="App" direction="column">
+    <div className="App">
       {/* 헤더 */}
-      <Grid item className="header" container justifyContent="flex-end" sx={{ mt: 2 }}>
+      <div className="header" style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
         {/* 프린트 버튼 */}
         <PrintButton printRef={printRef} />
-      </Grid>
+      </div>
 
       {/* 리포트 */}
-      <Grid item>
+      <div>
         {/* 필터 프롭스를 Report 컴포넌트에 전달 */}
-        <SurveyReport
-          ChartItem={ChartItem}
-          ref={printRef}
-        />
-      </Grid>
-    </Grid>
+        <SurveyReport ChartItem={ChartItem} ref={printRef} />
+      </div>
+    </div>
   );
 };
 
