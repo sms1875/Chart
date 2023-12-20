@@ -75,9 +75,10 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => (
  * @param {number} xMax - X 최대값
  * @param {boolean} isAnnotationEnabled - 주석 활성화 여부
  * @param {object} isDragDataRef - ref object for isDragData
+ * @param {function} onDataUpdate - 데이터 갱신 콜백 함수
  * @returns {Object} - 차트 옵션
  */
-export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled, isDragDataRef) => ({
+export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled, isDragDataRef, onDataUpdate) => ({
     scales: {
         x: {
             stacked: true,
@@ -95,9 +96,12 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
             onDragStart: () => {
                 isDragDataRef.current = true;
             },
+            onDrag :() =>{
+                onDataUpdate(); // 데이터 갱신 콜백 호출
+            },
             onDragEnd: () => {
                 isDragDataRef.current = false;
-                // TODO: update data
+                onDataUpdate(); // 데이터 갱신 콜백 호출
             },
         },
         tooltip: {

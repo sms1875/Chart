@@ -10,9 +10,10 @@ import { getYAxisOptions, generateChartDataSets, getChartOptions, colors } from 
  * @param {Array} props.selectedAxes - 선택된 Y 축
  * @param {Object} props.annotationXValue - 주석 X 값 설정
  * @param {boolean} props.isAnnotationEnabled - 주석 활성화 여부
+ * @param {function} props.onDataUpdate - 데이터 갱신 콜백 함수
  * @returns {JSX.Element} - 렌더링된 설문 결과 차트 컴포넌트
  */
-const SurveyChart = ({ ChartItem, selectedAxes, annotationXValue, isAnnotationEnabled }) => {
+const SurveyChart = ({ ChartItem, selectedAxes, annotationXValue, isAnnotationEnabled, onDataUpdate }) => {
   const axisConfig = useMemo(() => (
     ChartItem.axis.reduce((axesConfig, axis) => {
       axesConfig[axis] = getYAxisOptions('linear', selectedAxes.includes(axis), selectedAxes.length > 0 && selectedAxes[0] === axis ? 'left' : 'right', `${axis} 축`);
@@ -24,7 +25,7 @@ const SurveyChart = ({ ChartItem, selectedAxes, annotationXValue, isAnnotationEn
 
   const isDragDataRef = useRef(false);
   const chartOptions = useMemo(() => (
-    getChartOptions(selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled, isDragDataRef)
+    getChartOptions(selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled, isDragDataRef, onDataUpdate)
   ), [selectedAxes, axisConfig, annotationXValue.min, annotationXValue.max, isAnnotationEnabled]);
 
   return (
@@ -33,6 +34,7 @@ const SurveyChart = ({ ChartItem, selectedAxes, annotationXValue, isAnnotationEn
     </div>
   );
 };
+
 
 SurveyChart.propTypes = {
   ChartItem: PropTypes.shape({
