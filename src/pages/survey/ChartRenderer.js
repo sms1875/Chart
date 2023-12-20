@@ -3,6 +3,7 @@ import SurveyChart from './SurveyChart';
 import ChartTable from './ChartTable';
 
 const maxSelectedAxes = 3; // 선택 가능한 최대 Y 축 수
+
 /**
  * 차트를 렌더링하는 함수형 컴포넌트
  * @param {Object} props - 컴포넌트 속성
@@ -16,6 +17,15 @@ const ChartRenderer = ({ ChartItem }) => {
     max: ChartItem.date[1], // X 최대값
   });
   const [isAnnotationEnabled, setIsAnnotationEnabled] = useState(false); // 주석 활성화 여부
+  const [key, setKey] = useState(0); // key 상태
+
+  /**
+   * 데이터 갱신 콜백 함수
+   */
+  const handleDataUpdate = () => {
+    // key 값을 변경하여 테이블을 다시 그리도록 함
+    setKey(prevKey => prevKey + 1);
+  };
 
   /**
    * Y 축 선택 핸들러
@@ -80,13 +90,18 @@ const ChartRenderer = ({ ChartItem }) => {
           selectedAxes={selectedAxes}
           annotationXValue={annotationXValue}
           isAnnotationEnabled={isAnnotationEnabled}
+          onDataUpdate={handleDataUpdate}
         />
       </div>
 
-      <div>
-      <ChartTable chartData={ChartItem} selectedAxes={selectedAxes} />
-    </div>
-
+      {/* 테이블 */}
+      <div style={{ overflowX: 'auto' }}> {/* 스크롤을 추가하는 부분 */}
+        <ChartTable
+          key={key} // key 값을 ChartTable 컴포넌트에 전달
+          chartData={ChartItem}
+          selectedAxes={selectedAxes}
+        />
+      </div>
     </div>
   );
 };
