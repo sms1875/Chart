@@ -90,7 +90,6 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
             callbacks: {
                 afterLabel: function (context) {
                     let afterLabel = context.dataset.afterLabel || '';
-                    console.log(context);context
 
                     if (context.parsed.y !== null) {
                         afterLabel += '(' + context.dataset.yAxisID + ')';
