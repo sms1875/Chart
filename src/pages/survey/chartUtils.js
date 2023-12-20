@@ -153,7 +153,7 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
  * @returns {Array} - 생성된 색상 배열
  */
 export const generateRandomColors = (count) => (
-    Array.from({ length: count }, () => `#${Math.floor(Math.random() * 16777215).toString(16)}`)
+    Array.from({ length: count }, () => `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`)
 );
 
 export const colors = generateRandomColors(DEFAULT_COLOR_COUNT);
