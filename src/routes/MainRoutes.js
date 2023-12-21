@@ -19,7 +19,7 @@ const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 
 // ==============================|| MAIN ROUTING ||============================== //
-import { surveyList } from 'routes/surveyData';
+import { surveyList } from 'pages/survey/surveyData';
 
 
 const MainRoutes = {

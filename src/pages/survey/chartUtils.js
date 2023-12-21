@@ -71,14 +71,12 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => (
  * 차트 옵션을 생성하는 함수
  * @param {Array} selectedAxes - 선택된 Y 축
  * @param {Object} axisConfig - Y 축 설정
- * @param {number} xMin - X 최소값
- * @param {number} xMax - X 최대값
- * @param {boolean} isAnnotationEnabled - 주석 활성화 여부
+ * @param {Object} baseline - 기준월 설정
  * @param {object} isDragDataRef - ref object for isDragData
  * @param {function} onDataUpdate - 데이터 갱신 콜백 함수
  * @returns {Object} - 차트 옵션
  */
-export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotationEnabled, isDragDataRef, onDataUpdate) => ({
+export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRef, onDataUpdate) => ({
     scales: {
         x: {
             stacked: true,
@@ -134,11 +132,11 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
         annotation: {
             annotations: {
                 box1: {
-                    display: isAnnotationEnabled,
+                    display: true,
                     drawTime: 'beforeDraw',
                     type: 'box',
-                    xMin,
-                    xMax,
+                    xMin: baseline.start,
+                    xMax: baseline.end,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 },
             },

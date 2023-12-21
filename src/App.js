@@ -1,14 +1,14 @@
 // project import
-import Routes from 'routes';
 import ThemeCustomization from 'themes';
 import ScrollTop from 'components/ScrollTop';
+import SurveyResults from 'pages/survey/SurveyResults';
 
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 
 const App = () => (
   <ThemeCustomization>
     <ScrollTop>
-      <Routes />
+      <SurveyResults />
     </ScrollTop>
   </ThemeCustomization>
 );
