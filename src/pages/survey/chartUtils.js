@@ -77,6 +77,7 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => (
  * @returns {Object} - 차트 옵션
  */
 export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRef) => ({
+
     scales: {
         x: {
             stacked: true,
@@ -84,8 +85,12 @@ export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRe
         ...axisConfig,
     },
     interaction: {
-        mode: 'index',
+        // mode: 'index',
         intersect: false,
+    }, 
+    onClick: (event, elements, chart) => {
+        // TODO: 차트 클릭시 테이블의 해당 데이터에 포커스
+        console.log('click', event, elements, chart);
     },
     plugins: {
         events: {
