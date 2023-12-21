@@ -96,7 +96,7 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
             onDragStart: () => {
                 isDragDataRef.current = true;
             },
-            onDrag :() =>{
+            onDrag: () => {
                 onDataUpdate(); // 데이터 갱신 콜백 호출
             },
             onDragEnd: () => {
@@ -119,8 +119,7 @@ export const getChartOptions = (selectedAxes, axisConfig, xMin, xMax, isAnnotati
         zoom: {
             pan: {
                 enabled: true,
-                mode: () => (isDragDataRef.current ? null : 'xy'),
-                //modifierKey: 'ctrl',
+                onPanStart: () => (isDragDataRef.current ? false : true),
             },
             zoom: {
                 wheel: {
