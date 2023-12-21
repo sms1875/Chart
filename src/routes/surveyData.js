@@ -78,8 +78,8 @@ export const ChartItem = [
 export const surveyList = [
   {
     id: 1,
-    title: '설문조사 1',
-    description: '설문조사 1에 대한 설명',
+    title: '데이터 1',
+    description: '데이터 1에 대한 설명',
     chartItem: ChartItem,
   },
 ];
