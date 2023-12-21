@@ -76,7 +76,7 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => (
  * @param {function} onDataUpdate - 데이터 갱신 콜백 함수
  * @returns {Object} - 차트 옵션
  */
-export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRef, onDataUpdate) => ({
+export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRef) => ({
     scales: {
         x: {
             stacked: true,
@@ -88,8 +88,14 @@ export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRe
         intersect: false,
     },
     plugins: {
+        events: {
+            events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove', 'touchend'],
+            onclick: (event, chart, args) => {
+                console.log('click', event, chart, args);
+            }
+        },
+        /*
         dragData: {
-            enabled: true,
             round: 2, // 반올림 자릿수
             onDragStart: () => {
                 isDragDataRef.current = true;
@@ -102,6 +108,7 @@ export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRe
                 onDataUpdate(); // 데이터 갱신 콜백 호출
             },
         },
+        */
         tooltip: {
             callbacks: {
                 afterLabel: (context) => {
