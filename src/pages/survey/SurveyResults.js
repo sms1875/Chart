@@ -59,9 +59,10 @@ const SurveyResults = () => {
    * 검색 버튼 클릭 핸들러
    */
   const handleSearchClick = () => {
-    // TODO: searchPeriod, baselinePeriod 값이 유효한지 검사
+    // TODO: searchPeriod, baselinePeriod 값이 YYYYMM 형식에 유효한지 검사
 
     // TODO: searchPeriod를 이용하여 데이터를 검색하고, 검색된 데이터를 통해 ChartItem 생성
+    // 기존 사용하던 import { ChartItem } from "pages/survey/surveyData"; 제거 
 
     // ChartItem에 baseline 추가
     ChartItem.baseline = { start: baselinePeriod.startYear + baselinePeriod.startMonth, end: baselinePeriod.endYear + baselinePeriod.endMonth };
