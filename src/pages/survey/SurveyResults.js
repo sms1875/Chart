@@ -13,8 +13,32 @@ import { ChartItem } from "pages/survey/surveyData";
  */
 const YearMonthInput = ({ onChangeYear, onChangeMonth, valueYear, valueMonth }) => (
   <div>
-    <input type="number" placeholder="년도" value={valueYear} onChange={onChangeYear} />
-    <input type="number" placeholder="월" value={valueMonth} onChange={onChangeMonth} />
+    <input
+      type="number"
+      onInput={(e) => {
+        if (e.target.value.length > e.target.maxLength)
+          e.target.value = e.target.value.slice(0, e.target.maxLength);
+      }}
+      placeholder="년도"
+      value={valueYear}
+      onChange={onChangeYear}
+      min="2010"
+      max="2030"
+      maxLength={4}
+    />
+    <input
+      type="number"
+      onInput={(e) => {
+        if (e.target.value.length > e.target.maxLength)
+          e.target.value = e.target.value.slice(0, e.target.maxLength);
+      }}
+      placeholder="월"
+      value={valueMonth}
+      onChange={onChangeMonth}
+      min="1"
+      max="12"
+      maxLength={2}
+    />
   </div>
 );
 
@@ -45,11 +69,11 @@ const SurveyResults = () => {
   const [chartKey, setChartKey] = useState(0); // SurveyReport 키 관리 상태
 
   /**
-   * Input 변경 핸들러
-   * @param {string} field - 필드 이름 (startYear, startMonth, endYear, endMonth)
-   * @param {Object} event - 변경 이벤트 객체
-   * @param {Function} setState - 상태를 변경하는 함수
-   */
+  * Input 변경 핸들러
+  * @param {string} field - 필드 이름 (startYear, startMonth, endYear, endMonth)
+  * @param {Object} event - 변경 이벤트 객체
+  * @param {Function} setState - 상태를 변경하는 함수
+  */
   const handleInputChange = (field, event, setState) => {
     const { value } = event.target;
     setState((prevValue) => ({ ...prevValue, [field]: value }));
