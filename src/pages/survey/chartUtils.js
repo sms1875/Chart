@@ -1,16 +1,4 @@
-import {
-    Chart as ChartJS,
-    LinearScale,
-    CategoryScale,
-    BarElement,
-    PointElement,
-    LineElement,
-    Legend,
-    Tooltip,
-    LineController,
-    BarController,
-    Filler
-} from 'chart.js';
+import { Chart as ChartJS, LinearScale, CategoryScale, BarElement, PointElement, LineElement, Legend, Tooltip, LineController, BarController, Filler } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import dragDataPlugin from 'chartjs-plugin-dragdata';
@@ -96,23 +84,41 @@ export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRe
         ...axisConfig,
     },
     interaction: {
+        // mode: 'index',
         intersect: false,
-    },
+    }, 
     onClick: (event, elements, chart) => {
+        // TODO: 차트 클릭시 테이블의 해당 데이터에 포커스
         if (elements && elements.length > 0) {
             const datasetIndex = elements[0].datasetIndex;
             const dataIndex = elements[0].index;
-
+      
+            // 차트 데이터에서 선택된 데이터 가져오기
             const selectedData = chart.data.datasets[datasetIndex].data[dataIndex];
             const axis = chart.data.datasets[datasetIndex].yAxisID;
             const dataLabel = chart.data.datasets[datasetIndex].label;
             const xValue = chart.data.labels[dataIndex];
             const yValue = selectedData;
-
+      
             onClickChart(axis, dataLabel, xValue, yValue);
-        }
+          }
     },
     plugins: {
+        /*
+        dragData: {
+            round: 2, // 반올림 자릿수
+            onDragStart: () => {
+                isDragDataRef.current = true;
+            },
+            onDrag: () => {
+                onDataUpdate(); // 데이터 갱신 콜백 호출
+            },
+            onDragEnd: () => {
+                isDragDataRef.current = false;
+                onDataUpdate(); // 데이터 갱신 콜백 호출
+            },
+        },
+        */
         tooltip: {
             callbacks: {
                 afterLabel: (context) => {
