@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 /**
  * 특정 축에 대한 데이터 행을 렌더링하는 컴포넌트
@@ -35,6 +35,16 @@ const ChartTable = ({ chartData, selectedAxes, selectedChartValue }) => {
   // Find the index of the selected x value in the headers
   const selectedColumnIndex = chartData.date.indexOf(selectedChartValue?.xValue);
 
+  // Ref for the selected th element
+  const selectedHeaderRef = useRef();
+
+  useEffect(() => {
+    // Scroll the selected header into view
+    if (selectedHeaderRef.current) {
+      selectedHeaderRef.current.scrollIntoView({ inline: 'center' });
+    }
+  }, [selectedColumnIndex]);
+
   const tableRows = selectedAxes.flatMap((axis) => {
     const axisData = chartData.data.filter((data) => data.axis === axis);
     return axisData.map((rowData) => {
@@ -43,23 +53,13 @@ const ChartTable = ({ chartData, selectedAxes, selectedChartValue }) => {
     });
   });
 
-  useEffect(() => {
-    // 선택된 차트 값이 변경될 때 스크롤 조절
-    if (selectedChartValue) {
-      const selectedElement = document.querySelector(`td[data-axis="${selectedChartValue.axis}"][data-label="${selectedChartValue.dataLabel}"]`);
-      if (selectedElement) {
-        selectedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  }, [selectedChartValue]);
-
   return (
-    <div style={{ overflowX: 'auto' }}>
+    <div style={{ overflow: 'scroll' }}>
       <table border="1">
         <thead>
           <tr>
             {tableHeaders.map((header, index) => (
-              <th key={index} style={index === selectedColumnIndex+2 ? { backgroundColor: 'yellow', fontWeight: 'bold' } : {}}>
+              <th key={index} ref={index === selectedColumnIndex + 2 ? selectedHeaderRef : null} style={index === selectedColumnIndex + 2 ? { backgroundColor: 'yellow', fontWeight: 'bold' } : {}}>
                 {header}
               </th>
             ))}

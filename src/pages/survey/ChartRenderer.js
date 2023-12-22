@@ -39,7 +39,6 @@ const ChartRenderer = ({ ChartItem }) => {
   };
 
   const handleClickChart = (axis, dataLabel, xValue, yValue) => {
-    console.log(axis, dataLabel, xValue, yValue);
     setSelectedChartValue({ axis, dataLabel, xValue, yValue });
   };
 
