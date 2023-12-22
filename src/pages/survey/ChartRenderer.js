@@ -43,6 +43,7 @@ const ChartRenderer = ({ ChartItem }) => {
    */
   const handleDataUpdate = useCallback(() => {
     // key 값을 변경하여 테이블을 다시 그리도록 함
+    // onDragData 이벤트 발생시 데이터가 변경되어도 테이블이 다시 그려지지 않는 문제를 해결
     setKey((prevKey) => prevKey + 1);
   }, []);
 
