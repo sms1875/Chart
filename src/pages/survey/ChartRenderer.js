@@ -13,14 +13,7 @@ const maxSelectedAxes = 3; // 선택 가능한 최대 Y 축 수
 const ChartRenderer = ({ ChartItem }) => {
   const [selectedAxes, setSelectedAxes] = useState([ChartItem.axis[0]]); // 선택된 Y 축
   const [key, setKey] = useState(0); // key 상태
-
-  /**
-   * 데이터 갱신 콜백 함수
-   */
-  const handleDataUpdate = () => {
-    // key 값을 변경하여 테이블을 다시 그리도록 함
-    setKey(prevKey => prevKey + 1);
-  };
+  const [selectedChartValue, setSelectedChartValue] = useState(null); 
 
   /**
    * Y 축 선택 핸들러
@@ -35,6 +28,19 @@ const ChartRenderer = ({ ChartItem }) => {
       }
       return prevAxes;
     });
+  };
+
+  /**
+   * 데이터 갱신 콜백 함수
+   */
+  const handleDataUpdate = () => {
+    // key 값을 변경하여 테이블을 다시 그리도록 함
+    setKey(prevKey => prevKey + 1);
+  };
+
+  const handleClickChart = (axis, dataLabel, xValue, yValue) => {
+    console.log(axis, dataLabel, xValue, yValue);
+    setSelectedChartValue({ axis, dataLabel, xValue, yValue });
   };
 
   return (
@@ -55,15 +61,17 @@ const ChartRenderer = ({ ChartItem }) => {
           ChartItem={ChartItem}
           selectedAxes={selectedAxes}
           onDataUpdate={handleDataUpdate}
+          onClickChart={handleClickChart}
         />
       </div>
 
       {/* 테이블 */}
-      <div style={{ overflowX: 'auto' }}> {/* 스크롤을 추가하는 부분 */}
+      <div> {/* 스크롤을 추가하는 부분 */}
         <ChartTable
           key={key} // key 값을 ChartTable 컴포넌트에 전달
           chartData={ChartItem}
           selectedAxes={selectedAxes}
+          selectedChartValue={selectedChartValue}
         />
       </div>
     </div>

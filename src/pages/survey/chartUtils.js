@@ -76,8 +76,7 @@ export const generateChartDataSets = (selectedAxes, chartData, colors) => (
  * @param {function} onDataUpdate - 데이터 갱신 콜백 함수
  * @returns {Object} - 차트 옵션
  */
-export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRef) => ({
-
+export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRef, onDataUpdate, onClickChart) => ({
     scales: {
         x: {
             stacked: true,
@@ -90,15 +89,21 @@ export const getChartOptions = (selectedAxes, axisConfig, baseline, isDragDataRe
     }, 
     onClick: (event, elements, chart) => {
         // TODO: 차트 클릭시 테이블의 해당 데이터에 포커스
-        console.log('click', event, elements, chart);
+        if (elements && elements.length > 0) {
+            const datasetIndex = elements[0].datasetIndex;
+            const dataIndex = elements[0].index;
+      
+            // 차트 데이터에서 선택된 데이터 가져오기
+            const selectedData = chart.data.datasets[datasetIndex].data[dataIndex];
+            const axis = chart.data.datasets[datasetIndex].yAxisID;
+            const dataLabel = chart.data.datasets[datasetIndex].label;
+            const xValue = chart.data.labels[dataIndex];
+            const yValue = selectedData;
+      
+            onClickChart(axis, dataLabel, xValue, yValue);
+          }
     },
     plugins: {
-        events: {
-            events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove', 'touchend'],
-            onclick: (event, chart, args) => {
-                console.log('click', event, chart, args);
-            }
-        },
         /*
         dragData: {
             round: 2, // 반올림 자릿수

@@ -11,7 +11,7 @@ import { getYAxisOptions, generateChartDataSets, getChartOptions, colors } from 
  * @param {function} props.onDataUpdate - 데이터 갱신 콜백 함수
  * @returns {JSX.Element} - 렌더링된 설문 결과 차트 컴포넌트
  */
-const SurveyChart = ({ ChartItem, selectedAxes, onDataUpdate }) => {
+const SurveyChart = ({ ChartItem, selectedAxes, onDataUpdate, onClickChart }) => {
   const axisConfig = useMemo(() => (
     ChartItem.axis.reduce((axesConfig, axis) => {
       axesConfig[axis] = getYAxisOptions('linear', selectedAxes.includes(axis), selectedAxes.length > 0 && selectedAxes[0] === axis ? 'left' : 'right', `${axis} 축`);
@@ -23,7 +23,7 @@ const SurveyChart = ({ ChartItem, selectedAxes, onDataUpdate }) => {
 
   const isDragDataRef = useRef(false);
   const chartOptions = useMemo(() => (
-    getChartOptions(selectedAxes, axisConfig, ChartItem.baseline, isDragDataRef, onDataUpdate)
+    getChartOptions(selectedAxes, axisConfig, ChartItem.baseline, isDragDataRef, onDataUpdate, onClickChart)
   ), [selectedAxes, axisConfig]);
 
   return (
